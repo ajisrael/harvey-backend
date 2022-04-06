@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ajisrael/harvey-backend/issues"
   },
-  "homepage": "https://github.com/ajisrael/harvey-backend#readme"
+  "homepage": "https://github.com/ajisrael/harvey-backend#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
