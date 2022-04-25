@@ -40,22 +40,6 @@ function validateGardenBedData(gardenBedData) {
   }
 }
 
-function createGardenBedTable() {
-  return db.run(
-    'CREATE TABLE gardenBed( ' +
-      'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-      'bedId TEXT, ' +
-      'airTemp REAL, ' +
-      'soilTemp REAL, ' +
-      'light REAL, ' +
-      'moisture REAL, ' +
-      'humidity REAL, ' +
-      'created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ' +
-      '); ',
-    {}
-  );
-}
-
 function deleteGardenBedData() {
   return db.run('DELETE FROM gardenBed;', {});
 }
@@ -108,6 +92,5 @@ export {
   saveGardenBedData,
   getGardenBedData,
   getGardenBedDataById,
-  createGardenBedTable,
   deleteGardenBedData,
 };
