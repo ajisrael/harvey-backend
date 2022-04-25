@@ -1,5 +1,7 @@
 const gardenBedConfig = {
-  apiCallDelay: 4000,
+  1: {
+    apiCallDelay: 4000,
+  },
 };
 
 export default gardenBedConfig;
