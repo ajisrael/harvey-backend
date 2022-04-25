@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "data:import": "node seeder.js",
+    "data:delete": "node seeder.js -d"
   },
   "repository": {
     "type": "git",

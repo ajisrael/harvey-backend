@@ -1,5 +1,4 @@
 import express from 'express';
-
 import gardenBedRoutes from './routes/gardenBedRoutes.js';
 
 const app = express();
