@@ -7,8 +7,8 @@ import {
   postData,
 } from '../controllers/gardenBedController.js';
 
-router.route('/:id/config').get(getConfig);
+router.route('/:bedId/config').get(getConfig);
 router.route('/data').get(getData);
-router.route('/:id/data').get(getDataById).post(postData);
+router.route('/:bedId/data').get(getDataById).post(postData);
 
 export default router;
