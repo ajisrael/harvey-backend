@@ -1,4 +1,5 @@
 import db from './db.js';
+import serverConfig from '../config/serverConfig.js';
 
 function validateGardenBedData(gardenBedData) {
   let messages = [];
@@ -55,4 +56,32 @@ function saveGardenBedData(gardenBedData) {
   return { message };
 }
 
-export { saveGardenBedData };
+function getGardenBedData(page = 1) {
+  const offset = (page - 1) * serverConfig.listPerPage;
+  const data = db.query(`SELECT * FROM gardenBed LIMIT ?,?`, [
+    offset,
+    serverConfig.listPerPage,
+  ]);
+  const meta = { page };
+
+  return {
+    data,
+    meta,
+  };
+}
+
+function getGardenBedDataById(page = 1, id) {
+  const offset = (page - 1) * serverConfig.listPerPage;
+  const data = db.query(
+    `SELECT * FROM gardenBed WHERE bedId = ${id} LIMIT ?,?`,
+    [offset, serverConfig.listPerPage]
+  );
+  const meta = { page };
+
+  return {
+    data,
+    meta,
+  };
+}
+
+export { saveGardenBedData, getGardenBedData, getGardenBedDataById };
