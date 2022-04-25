@@ -13,7 +13,7 @@ const getConfig = (req, res) => {
 };
 
 // @desc    Save data from garden bed
-// @route   GET /api/gardenBed/:id/data
+// @route   POST /api/gardenBed/:id/data
 // @access  Public
 const postData = (req, res) => {
   const id = req.params.id;
