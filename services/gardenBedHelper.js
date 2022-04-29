@@ -1,4 +1,4 @@
-import db from './db.js';
+import db from '../utilities/db.js';
 import serverConfig from '../config/serverConfig.js';
 
 function validateGardenBedData(gardenBedData) {
@@ -38,6 +38,22 @@ function validateGardenBedData(gardenBedData) {
 
     throw error;
   }
+}
+
+function createGardenBedTable() {
+  return db.run(
+    'CREATE TABLE gardenBed( ' +
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+      'bedId TEXT, ' +
+      'airTemp REAL, ' +
+      'soilTemp REAL, ' +
+      'light REAL, ' +
+      'moisture REAL, ' +
+      'humidity REAL, ' +
+      'created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ' +
+      '); ',
+    {}
+  );
 }
 
 function deleteGardenBedData() {
@@ -89,6 +105,7 @@ function getGardenBedDataById(page = 1, bedId) {
 }
 
 export {
+  createGardenBedTable,
   saveGardenBedData,
   getGardenBedData,
   getGardenBedDataById,
