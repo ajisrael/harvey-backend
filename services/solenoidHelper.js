@@ -19,7 +19,7 @@ function deleteSolenoidStateData() {
   return db.run(`DELETE FROM ${solenoidStateTableName};`, {});
 }
 
-function getSolenoidState(page = 1) {
+function getSolenoidStateData(page = 1) {
   const offset = (page - 1) * serverConfig.listPerPage;
   const data = db.query(`SELECT * FROM solenoidState LIMIT ?,?`, [
     offset,
@@ -33,10 +33,10 @@ function getSolenoidState(page = 1) {
   };
 }
 
-function getSolenoidStateById(page = 1, componentId) {
+function getSolenoidStateDataById(page = 1, componentId) {
   const offset = (page - 1) * serverConfig.listPerPage;
   const data = db.query(
-    `SELECT * FROM ${solenoidStateTableName} WHERE componentId = ${componentId} LIMIT ?,?`,
+    `SELECT * FROM ${solenoidStateTableName} WHERE componentId = '${componentId}' LIMIT ?,?`,
     [offset, serverConfig.listPerPage]
   );
   const meta = { page };
@@ -65,7 +65,7 @@ function saveSolenoidStateData(gardenBedData) {
 export {
   createSolenoidStateTable,
   deleteSolenoidStateData,
-  getSolenoidState,
-  getSolenoidStateById,
+  getSolenoidStateData,
+  getSolenoidStateDataById,
   saveSolenoidStateData,
 };
