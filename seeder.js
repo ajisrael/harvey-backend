@@ -2,15 +2,15 @@ import gardenBedData from './data/gardenBedData.js';
 import path from 'path';
 import {
   createGardenBedTable,
+  deleteGardenBedTable,
   saveGardenBedData,
-  deleteGardenBedData,
 } from './services/gardenBedHelper.js';
 import sqlite from 'better-sqlite3';
 
 const db = new sqlite(path.resolve('harvey.db'));
 
 const deleteData = () => {
-  deleteGardenBedData();
+  deleteGardenBedTable();
 };
 
 const importData = () => {
@@ -22,6 +22,8 @@ if (process.argv[2] === '-d') {
 } else {
   try {
     createGardenBedTable();
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
   importData();
 }

@@ -17,23 +17,8 @@ function createGardenBedTable() {
   );
 }
 
-function deleteGardenBedData() {
+function deleteGardenBedTable() {
   return db.run('DELETE FROM gardenBed;', {});
-}
-
-function saveGardenBedData(gardenBedData) {
-  const { bedId, airTemp, soilTemp, light, moisture, humidity } = gardenBedData;
-  const result = db.run(
-    'INSERT INTO gardenBed (bedId, airTemp, soilTemp, light, moisture, humidity) VALUES (@bedId, @airTemp, @soilTemp, @light, @moisture, @humidity)',
-    { bedId, airTemp, soilTemp, light, moisture, humidity }
-  );
-
-  let message = 'Error in creating quote';
-  if (result.changes) {
-    message = 'Garden bed data saved successfully';
-  }
-
-  return { message };
 }
 
 function getGardenBedData(page = 1) {
@@ -64,10 +49,25 @@ function getGardenBedDataById(page = 1, bedId) {
   };
 }
 
+function saveGardenBedData(gardenBedData) {
+  const { bedId, airTemp, soilTemp, light, moisture, humidity } = gardenBedData;
+  const result = db.run(
+    'INSERT INTO gardenBed (bedId, airTemp, soilTemp, light, moisture, humidity) VALUES (@bedId, @airTemp, @soilTemp, @light, @moisture, @humidity)',
+    { bedId, airTemp, soilTemp, light, moisture, humidity }
+  );
+
+  let message = 'Error in creating quote';
+  if (result.changes) {
+    message = 'Garden bed data saved successfully';
+  }
+
+  return { message };
+}
+
 export {
   createGardenBedTable,
-  saveGardenBedData,
+  deleteGardenBedTable,
   getGardenBedData,
   getGardenBedDataById,
-  deleteGardenBedData,
+  saveGardenBedData,
 };
