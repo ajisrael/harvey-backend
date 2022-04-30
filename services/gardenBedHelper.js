@@ -1,9 +1,10 @@
 import db from '../utilities/db.js';
 import serverConfig from '../config/serverConfig.js';
+import { gardenBedTableName } from '../constants/tableNames.js';
 
 function createGardenBedTable() {
   return db.run(
-    'CREATE TABLE gardenBed( ' +
+    `CREATE TABLE ${gardenBedTableName}( ` +
       'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
       'bedId TEXT, ' +
       'airTemp REAL, ' +
@@ -17,13 +18,13 @@ function createGardenBedTable() {
   );
 }
 
-function deleteGardenBedTable() {
-  return db.run('DELETE FROM gardenBed;', {});
+function deleteGardenBedData() {
+  return db.run(`DELETE FROM ${gardenBedTableName};`, {});
 }
 
 function getGardenBedData(page = 1) {
   const offset = (page - 1) * serverConfig.listPerPage;
-  const data = db.query(`SELECT * FROM gardenBed LIMIT ?,?`, [
+  const data = db.query(`SELECT * FROM ${gardenBedTableName} LIMIT ?,?`, [
     offset,
     serverConfig.listPerPage,
   ]);
@@ -38,7 +39,7 @@ function getGardenBedData(page = 1) {
 function getGardenBedDataById(page = 1, bedId) {
   const offset = (page - 1) * serverConfig.listPerPage;
   const data = db.query(
-    `SELECT * FROM gardenBed WHERE bedId = '${bedId}' LIMIT ?,?`,
+    `SELECT * FROM ${gardenBedTableName} WHERE bedId = '${bedId}' LIMIT ?,?`,
     [offset, serverConfig.listPerPage]
   );
   const meta = { page };
@@ -52,11 +53,11 @@ function getGardenBedDataById(page = 1, bedId) {
 function saveGardenBedData(gardenBedData) {
   const { bedId, airTemp, soilTemp, light, moisture, humidity } = gardenBedData;
   const result = db.run(
-    'INSERT INTO gardenBed (bedId, airTemp, soilTemp, light, moisture, humidity) VALUES (@bedId, @airTemp, @soilTemp, @light, @moisture, @humidity)',
+    `INSERT INTO ${gardenBedTableName} (bedId, airTemp, soilTemp, light, moisture, humidity) VALUES (@bedId, @airTemp, @soilTemp, @light, @moisture, @humidity)`,
     { bedId, airTemp, soilTemp, light, moisture, humidity }
   );
 
-  let message = 'Error in creating quote';
+  let message = 'Error in saving garden bed data';
   if (result.changes) {
     message = 'Garden bed data saved successfully';
   }
@@ -66,7 +67,7 @@ function saveGardenBedData(gardenBedData) {
 
 export {
   createGardenBedTable,
-  deleteGardenBedTable,
+  deleteGardenBedData,
   getGardenBedData,
   getGardenBedDataById,
   saveGardenBedData,
