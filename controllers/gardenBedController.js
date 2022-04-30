@@ -4,7 +4,7 @@ import {
   getGardenBedDataById,
 } from '../services/gardenBedHelper.js';
 
-// @desc    Return data for all garden beds
+// @desc    Return data for garden beds
 // @route   GET /api/gardenBed/data/
 // @access  Public
 const getData = (req, res) => {
