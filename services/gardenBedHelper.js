@@ -38,7 +38,7 @@ function getGardenBedData(page = 1) {
 function getGardenBedDataById(page = 1, bedId) {
   const offset = (page - 1) * serverConfig.listPerPage;
   const data = db.query(
-    `SELECT * FROM gardenBed WHERE bedId = ${bedId} LIMIT ?,?`,
+    `SELECT * FROM gardenBed WHERE bedId = '${bedId}' LIMIT ?,?`,
     [offset, serverConfig.listPerPage]
   );
   const meta = { page };
