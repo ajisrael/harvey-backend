@@ -1,7 +1,8 @@
 import serverConfig from '../config/serverConfig.js';
 import {
+  activateSolenoid,
+  deactivateSolenoid,
   isSolenoidActive,
-  updateSolenoidState,
 } from '../services/solenoidHelper.js';
 
 function shouldActivateSolenoid(moistureLevel) {
@@ -18,14 +19,12 @@ function checkMoistureLevels(req, res, next) {
 
   try {
     if (shouldActivateSolenoid(moistureLevel) && !isSolenoidActive(bedId)) {
-      console.log(`Activating ${bedId} solenoid.`);
-      updateSolenoidState(bedId, serverConfig.solenoidOn);
+      activateSolenoid(bedId);
     } else if (
       shouldDeactivateSolenoid(moistureLevel) &&
       isSolenoidActive(bedId)
     ) {
-      console.log(`Deactivating ${bedId} solenoid.`);
-      updateSolenoidState(bedId, serverConfig.solenoidOff);
+      deactivateSolenoid(bedId);
     }
 
     next();

@@ -1,5 +1,6 @@
 import db from '../utilities/db.js';
 import { solenoidStateTableName } from '../constants/tableNames.js';
+import serverConfig from '../config/serverConfig.js';
 
 function createSolenoidStateTable() {
   return db.run(
@@ -72,6 +73,19 @@ function isSolenoidActive(componentId) {
   return getSolenoidStateById(componentId) !== 0;
 }
 
+function activateSolenoid(componentId) {
+  console.log(`Activating ${componentId} solenoid.`);
+  updateSolenoidState(componentId, serverConfig.solenoidOn);
+  setTimeout(() => {
+    deactivateSolenoid(componentId);
+  }, serverConfig.solenoidDelay);
+}
+
+function deactivateSolenoid(componentId) {
+  console.log(`Deactivating ${componentId} solenoid.`);
+  updateSolenoidState(componentId, serverConfig.solenoidOff);
+}
+
 export {
   createSolenoidStateTable,
   deleteSolenoidStateData,
@@ -80,5 +94,6 @@ export {
   getSolenoidStateById,
   isSolenoidActive,
   saveSolenoidStateData,
-  updateSolenoidState,
+  activateSolenoid,
+  deactivateSolenoid,
 };
