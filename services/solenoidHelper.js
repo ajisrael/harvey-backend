@@ -20,7 +20,7 @@ function deleteSolenoidStateData() {
 }
 
 function getSolenoidStateData() {
-  const data = db.query(`SELECT * FROM solenoidState`, {});
+  const data = db.query(`SELECT * FROM ${solenoidStateTableName}`, {});
 
   return {
     data,
