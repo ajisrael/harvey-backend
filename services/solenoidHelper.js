@@ -19,36 +19,27 @@ function deleteSolenoidStateData() {
   return db.run(`DELETE FROM ${solenoidStateTableName};`, {});
 }
 
-function getSolenoidStateData(page = 1) {
-  const offset = (page - 1) * serverConfig.listPerPage;
-  const data = db.query(`SELECT * FROM solenoidState LIMIT ?,?`, [
-    offset,
-    serverConfig.listPerPage,
-  ]);
-  const meta = { page };
+function getSolenoidStateData() {
+  const data = db.query(`SELECT * FROM solenoidState`, {});
 
   return {
     data,
-    meta,
   };
 }
 
-function getSolenoidStateDataById(page = 1, componentId) {
-  const offset = (page - 1) * serverConfig.listPerPage;
+function getSolenoidStateDataById(componentId) {
   const data = db.query(
-    `SELECT * FROM ${solenoidStateTableName} WHERE componentId = '${componentId}' LIMIT ?,?`,
-    [offset, serverConfig.listPerPage]
+    `SELECT * FROM ${solenoidStateTableName} WHERE componentId = '${componentId}'`,
+    {}
   );
-  const meta = { page };
 
   return {
     data,
-    meta,
   };
 }
 
-function saveSolenoidStateData(gardenBedData) {
-  const { componentId, solenoidState, entryActive } = gardenBedData;
+function saveSolenoidStateData(solenoidStateData) {
+  const { componentId, solenoidState, entryActive } = solenoidStateData;
   const result = db.run(
     `INSERT INTO ${solenoidState} (componentId, solenoidState, entryActive) VALUES (@componentId, @solenoidState, @entryActive)`,
     { componentId, solenoidState, entryActive }
@@ -62,10 +53,33 @@ function saveSolenoidStateData(gardenBedData) {
   return { message };
 }
 
+function updateSolenoidState(componentId, solenoidState) {
+  const result = db.run(
+    `UPDATE ${solenoidStateTableName} SET solenoidState = ${solenoidState} WHERE componentId = '${componentId}';`,
+    {}
+  );
+}
+
+function getSolenoidStateById(componentId) {
+  const solenoidStateData = db.query(
+    `SELECT solenoidState FROM ${solenoidStateTableName} WHERE componentId = '${componentId}'`,
+    {}
+  );
+
+  return solenoidStateData[0].solenoidState;
+}
+
+function isSolenoidActive(componentId) {
+  return getSolenoidStateById(componentId) !== 0;
+}
+
 export {
   createSolenoidStateTable,
   deleteSolenoidStateData,
   getSolenoidStateData,
   getSolenoidStateDataById,
+  getSolenoidStateById,
+  isSolenoidActive,
   saveSolenoidStateData,
+  updateSolenoidState,
 };
