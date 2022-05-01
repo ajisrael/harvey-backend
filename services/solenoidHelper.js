@@ -1,5 +1,4 @@
 import db from '../utilities/db.js';
-import serverConfig from '../config/serverConfig.js';
 import { solenoidStateTableName } from '../constants/tableNames.js';
 
 function createSolenoidStateTable() {
