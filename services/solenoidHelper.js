@@ -78,7 +78,7 @@ function activateSolenoid(componentId) {
   updateSolenoidState(componentId, serverConfig.solenoidOn);
   setTimeout(() => {
     deactivateSolenoid(componentId);
-  }, serverConfig.solenoidDelay);
+  }, serverConfig.pumpAndSolenoidDelay);
 }
 
 function deactivateSolenoid(componentId) {

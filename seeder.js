@@ -3,14 +3,21 @@ import sqlite from 'better-sqlite3';
 import {
   gardenBedTableName,
   solenoidStateTableName,
+  pumpStateTableName,
 } from './constants/tableNames.js';
 import gardenBedData from './data/gardenBedData.js';
+import pumpStateData from './data/pumpStateData.js';
 import solenoidStateData from './data/solenoidStateData.js';
 import {
   createGardenBedTable,
   deleteGardenBedData,
   saveGardenBedData,
 } from './services/gardenBedHelper.js';
+import {
+  createPumpStateTable,
+  deletePumpStateData,
+  savePumpStateData,
+} from './services/pumpHelper.js';
 import {
   createSolenoidStateTable,
   deleteSolenoidStateData,
@@ -37,16 +44,19 @@ const tryToDeleteData = (deleteDataFunction, tableName) => {
 
 const deleteData = () => {
   tryToDeleteData(deleteGardenBedData, gardenBedTableName);
+  tryToDeleteData(deletePumpStateData, pumpStateTableName);
   tryToDeleteData(deleteSolenoidStateData, solenoidStateTableName);
 };
 
 const tryToCreateTables = () => {
   tryToCreateTable(createGardenBedTable, gardenBedTableName);
+  tryToCreateTable(createPumpStateTable, pumpStateTableName);
   tryToCreateTable(createSolenoidStateTable, solenoidStateTableName);
 };
 
 const importData = () => {
   gardenBedData.forEach((entry) => saveGardenBedData(entry));
+  pumpStateData.forEach((entry) => savePumpStateData(entry));
   solenoidStateData.forEach((entry) => saveSolenoidStateData(entry));
 };
 
