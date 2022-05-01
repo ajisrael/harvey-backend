@@ -41,7 +41,7 @@ function getSolenoidStateDataById(componentId) {
 function saveSolenoidStateData(solenoidStateData) {
   const { componentId, solenoidState, entryActive } = solenoidStateData;
   const result = db.run(
-    `INSERT INTO ${solenoidState} (componentId, solenoidState, entryActive) VALUES (@componentId, @solenoidState, @entryActive)`,
+    `INSERT INTO ${solenoidStateTableName} (componentId, solenoidState, entryActive) VALUES (@componentId, @solenoidState, @entryActive)`,
     { componentId, solenoidState, entryActive }
   );
 
