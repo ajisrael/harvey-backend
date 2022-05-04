@@ -76,6 +76,7 @@ function activateSolenoid(componentId) {
   console.log(`Activating ${componentId} solenoid.`);
   updateSolenoidState(componentId, serverConfig.solenoidOn);
   setTimeout(() => {
+    console.log(`Timeout for ${componentId} solenoid reached.`);
     deactivateSolenoid(componentId);
   }, serverConfig.pumpAndSolenoidDelay);
 }
