@@ -62,10 +62,9 @@ function updateSolenoidState(componentId, solenoidState) {
 
 function getSolenoidStateById(componentId) {
   const solenoidStateData = db.query(
-    `SELECT solenoidState FROM ${solenoidStateTableName} WHERE componentId = '${componentId}'`,
+    `SELECT solenoidState FROM ${solenoidStateTableName} WHERE componentId = '${componentId}' LIMIT 1`,
     {}
   );
-
   return solenoidStateData[0].solenoidState;
 }
 
