@@ -60,10 +60,23 @@ function updatePumpState(componentId, pumpState) {
   );
 }
 
+function getPumpStateById(componentId) {
+  const pumpStateData = db.query(
+    `SELECT pumpState FROM ${pumpStateTableName} WHERE componentId = '${componentId}' LIMIT 1`,
+    {}
+  );
+  return pumpStateData[0].pumpState;
+}
+
+function isPumpActive(componentId) {
+  return getPumpStateById(componentId) !== 0;
+}
+
 function activatePump(componentId) {
   console.log(`Activating ${componentId} pump.`);
   updatePumpState(componentId, serverConfig.pumpOn);
   setTimeout(() => {
+    console.log(`Timeout for ${componentId} pump reached.`);
     deactivatePump(componentId);
   }, serverConfig.pumpDelay);
 }
@@ -80,5 +93,6 @@ export {
   deletePumpStateData,
   getPumpStateData,
   getPumpStateDataById,
+  isPumpActive,
   savePumpStateData,
 };
