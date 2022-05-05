@@ -1,5 +1,11 @@
 const gardenBedTableName = 'gardenBed';
-const solenoidStateTableName = 'solenoidState';
 const pumpStateTableName = 'pumpState';
+const solenoidStateTableName = 'solenoidState';
+const userTableName = 'user';
 
-export { gardenBedTableName, solenoidStateTableName, pumpStateTableName };
+export {
+  gardenBedTableName,
+  pumpStateTableName,
+  solenoidStateTableName,
+  userTableName,
+};

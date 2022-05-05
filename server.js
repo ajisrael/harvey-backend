@@ -1,8 +1,12 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import nodeRoutes from './routes/nodeRoutes.js';
 import gardenBedRoutes from './routes/gardenBedRoutes.js';
 import pumpRoutes from './routes/pumpRoutes.js';
 import solenoidRoutes from './routes/solenoidRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+
+dotenv.config();
 
 const app = express();
 
@@ -17,5 +21,11 @@ app.use('/api/node', nodeRoutes);
 app.use('/api/gardenBed', gardenBedRoutes);
 app.use('/api/pumpState', pumpRoutes);
 app.use('/api/solenoidState', solenoidRoutes);
+app.use('/api/users', userRoutes);
 
-app.listen(5000, console.log('Server running on port 5000'));
+const PORT = process.env.PORT || 5000;
+
+app.listen(
+  PORT,
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+);

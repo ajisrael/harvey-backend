@@ -2,12 +2,14 @@ import path from 'path';
 import sqlite from 'better-sqlite3';
 import {
   gardenBedTableName,
-  solenoidStateTableName,
   pumpStateTableName,
+  solenoidStateTableName,
+  userTableName,
 } from './constants/tableNames.js';
 import gardenBedData from './data/gardenBedData.js';
 import pumpStateData from './data/pumpStateData.js';
 import solenoidStateData from './data/solenoidStateData.js';
+import users from './data/userData.js';
 import {
   createGardenBedTable,
   deleteGardenBedData,
@@ -23,6 +25,11 @@ import {
   deleteSolenoidStateData,
   saveSolenoidStateData,
 } from './services/solenoidHelper.js';
+import {
+  createUserTable,
+  deleteUserData,
+  saveUserData,
+} from './services/userHelper.js';
 
 const db = new sqlite(path.resolve('harvey.db'));
 
@@ -46,18 +53,21 @@ const deleteData = () => {
   tryToDeleteData(deleteGardenBedData, gardenBedTableName);
   tryToDeleteData(deletePumpStateData, pumpStateTableName);
   tryToDeleteData(deleteSolenoidStateData, solenoidStateTableName);
+  tryToDeleteData(deleteUserData, userTableName);
 };
 
 const tryToCreateTables = () => {
   tryToCreateTable(createGardenBedTable, gardenBedTableName);
   tryToCreateTable(createPumpStateTable, pumpStateTableName);
   tryToCreateTable(createSolenoidStateTable, solenoidStateTableName);
+  tryToCreateTable(createUserTable, userTableName);
 };
 
 const importData = () => {
   gardenBedData.forEach((entry) => saveGardenBedData(entry));
   pumpStateData.forEach((entry) => savePumpStateData(entry));
   solenoidStateData.forEach((entry) => saveSolenoidStateData(entry));
+  users.forEach((entry) => saveUserData(entry));
 };
 
 if (process.argv[2] === '-d') {
