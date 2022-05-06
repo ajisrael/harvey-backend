@@ -1,7 +1,7 @@
 import {
   getUserDataByEmail,
   matchPassword,
-  saveUserData,
+  saveUserDataAndReturnUser,
 } from '../services/userHelper.js';
 import generateToken from '../utilities/generateToken.js';
 
@@ -13,7 +13,7 @@ const loginUser = (req, res) => {
 
   const user = getUserDataByEmail(email);
 
-  if (user && matchPassword(user.password, password)) {
+  if (user && matchPassword(email, password)) {
     console.log(`Logged in user: ${user.name}`);
     res.json({
       _id: user.id,
@@ -41,7 +41,7 @@ const registerUser = (req, res) => {
     throw new Error('User already exists');
   }
 
-  const user = saveUserData({ name, email, password, isAdmin: 0 });
+  const user = saveUserDataAndReturnUser(name, email, password);
 
   if (user) {
     console.log(`Registered user: ${user.name}`);

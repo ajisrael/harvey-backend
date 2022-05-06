@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import db from '../utilities/db.js';
 import { userTableName } from '../constants/tableNames.js';
 
+const queryParams = 'id, name, email, isAdmin';
+
 function createUserTable() {
   return db.run(
     `CREATE TABLE ${userTableName}( ` +
@@ -21,7 +23,7 @@ function deleteUserData() {
 }
 
 function getUserData() {
-  const data = db.query(`SELECT * FROM ${userTableName}`, {});
+  const data = db.query(`SELECT ${queryParams} FROM ${userTableName}`, {});
 
   return {
     data,
@@ -30,7 +32,7 @@ function getUserData() {
 
 function getUserDataById(id) {
   const data = db.query(
-    `SELECT * FROM ${userTableName} WHERE id = '${id} LIMIT 1'`,
+    `SELECT ${queryParams} FROM ${userTableName} WHERE id = '${id} LIMIT 1'`,
     {}
   );
 
@@ -39,15 +41,24 @@ function getUserDataById(id) {
 
 function getUserDataByEmail(email) {
   const data = db.query(
-    `SELECT * FROM ${userTableName} WHERE email = '${email}' LIMIT 1`,
+    `SELECT ${queryParams} FROM ${userTableName} WHERE email = '${email}' LIMIT 1`,
     {}
   );
 
   return data[0];
 }
 
-function matchPassword(userPassword, enteredPassword) {
-  return bcrypt.compare(userPassword, enteredPassword);
+function getPasswordByEmail(email) {
+  const data = db.query(
+    `SELECT password FROM ${userTableName} WHERE email = '${email}' LIMIT 1`,
+    {}
+  );
+
+  return data[0];
+}
+
+function matchPassword(email, password) {
+  return bcrypt.compare(getPasswordByEmail(email).password, password);
 }
 
 function saveUserData(userData) {
@@ -66,6 +77,12 @@ function saveUserData(userData) {
   }
 
   return { message };
+}
+
+function saveUserDataAndReturnUser(name, email, password, isAdmin = 0) {
+  const userData = { name, email, password, isAdmin };
+  saveUserData(userData);
+  return userData;
 }
 
 function updateUserName(id, name) {
@@ -104,6 +121,7 @@ export {
   getUserDataByEmail,
   matchPassword,
   saveUserData,
+  saveUserDataAndReturnUser,
   updateUserEmail,
   updateUserIsAdmin,
   updateUserName,
