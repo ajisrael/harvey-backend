@@ -6,7 +6,7 @@ import {
 
 // @desc    Return data for garden beds
 // @route   GET /api/gardenBed/data/
-// @access  Public
+// @access  Private
 const getData = (req, res) => {
   const page = req.query.page ? req.query.page : 1;
   if (req.body.bedId) {
@@ -23,7 +23,7 @@ const getData = (req, res) => {
 
 // @desc    Save data from garden bed
 // @route   POST /api/gardenBed/data
-// @access  Public
+// @access  Private
 const postData = (req, res) => {
   const bedId = req.body.bedId;
   console.log(`Data received from garden bed ${bedId}:`);

@@ -2,7 +2,7 @@ import nodeConfig from '../config/nodeConfig.js';
 
 // @desc    Return garden bed config values
 // @route   GET /api/node/:nodeId/config
-// @access  Public
+// @access  Private
 const getConfig = (req, res) => {
   const nodeId = req.params.nodeId;
   const config = nodeConfig[nodeId];

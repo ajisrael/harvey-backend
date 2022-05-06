@@ -5,7 +5,7 @@ import {
 
 // @desc    Return data for of solenoid states for components
 // @route   GET /api/solenoidState/data/
-// @access  Public
+// @access  Private
 const getData = (req, res) => {
   if (req.body.componentId) {
     const componentId = req.body.componentId;
