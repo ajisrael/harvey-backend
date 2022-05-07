@@ -17,11 +17,11 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-app.use('/api/node', nodeRoutes);
-app.use('/api/gardenBed', gardenBedRoutes);
-app.use('/api/pumpState', pumpRoutes);
-app.use('/api/solenoidState', solenoidRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/v1/node', nodeRoutes);
+app.use('/api/v1/gardenBed', gardenBedRoutes);
+app.use('/api/v1/pumpState', pumpRoutes);
+app.use('/api/v1/solenoidState', solenoidRoutes);
+app.use('/api/v1/users', userRoutes);
 
 const PORT = process.env.PORT || 5000;
 
