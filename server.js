@@ -5,6 +5,7 @@ import gardenBedRoutes from './routes/gardenBedRoutes.js';
 import pumpRoutes from './routes/pumpRoutes.js';
 import solenoidRoutes from './routes/solenoidRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
 
@@ -22,6 +23,9 @@ app.use('/api/v1/gardenBed', gardenBedRoutes);
 app.use('/api/v1/pumpState', pumpRoutes);
 app.use('/api/v1/solenoidState', solenoidRoutes);
 app.use('/api/v1/users', userRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
