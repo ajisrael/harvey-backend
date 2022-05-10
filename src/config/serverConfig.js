@@ -1,4 +1,5 @@
 const serverConfig = {
+  jwtExpiration: '1d',
   listPerPage: 10,
   pumpDelay: 10 * 1000,
   pumpOn: 1,
