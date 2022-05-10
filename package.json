@@ -4,10 +4,10 @@
   "description": "backend api to handle communication of data and tasks between frond end and nodes of Harvey",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "dev": "nodemon server",
-    "data:import": "node seeder.js",
-    "data:delete": "node seeder.js -d"
+    "start": "node src/server",
+    "dev": "nodemon src/server",
+    "data:import": "node src/seeder.js",
+    "data:delete": "node src/seeder.js -d"
   },
   "repository": {
     "type": "git",
