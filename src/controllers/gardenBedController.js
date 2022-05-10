@@ -1,7 +1,7 @@
 import {
-  saveGardenBedData,
   getGardenBedData,
   getGardenBedDataById,
+  saveGardenBedData,
 } from '../services/gardenBedHelper.js';
 
 // @desc    Return data for garden beds
