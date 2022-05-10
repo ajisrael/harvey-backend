@@ -4,7 +4,7 @@ import {
 } from '../services/pumpHelper.js';
 
 // @desc    Return data for of pump states for components
-// @route   GET /api/pumpState/data/
+// @route   GET /api/v1/pumpState/data
 // @access  Private
 const getData = (req, res) => {
   if (req.body.componentId) {

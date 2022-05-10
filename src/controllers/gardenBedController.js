@@ -5,7 +5,7 @@ import {
 } from '../services/gardenBedHelper.js';
 
 // @desc    Return data for garden beds
-// @route   GET /api/gardenBed/data/
+// @route   GET /api/v1/gardenBed/data
 // @access  Private
 const getData = (req, res) => {
   const page = req.query.page ? req.query.page : 1;
@@ -22,7 +22,7 @@ const getData = (req, res) => {
 };
 
 // @desc    Save data from garden bed
-// @route   POST /api/gardenBed/data
+// @route   POST /api/v1/gardenBed/data
 // @access  Private
 const postData = (req, res) => {
   const bedId = req.body.bedId;

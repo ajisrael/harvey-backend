@@ -5,7 +5,7 @@ import {
 } from '../services/actionsHelper.js';
 
 // @desc    Return data for actions
-// @route   GET /api/actions/data/
+// @route   GET /api/v1/actions/data
 // @access  Private
 const getData = (req, res) => {
   const page = req.query.page ? req.query.page : 1;
@@ -22,7 +22,7 @@ const getData = (req, res) => {
 };
 
 // @desc    Save data from action
-// @route   POST /api/actions/data
+// @route   POST /api/v1/actions/data
 // @access  Private
 const postData = (req, res) => {
   const actionId = req.body.actionId;

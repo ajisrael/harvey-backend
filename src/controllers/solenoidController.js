@@ -4,7 +4,7 @@ import {
 } from '../services/solenoidHelper.js';
 
 // @desc    Return data for of solenoid states for components
-// @route   GET /api/solenoidState/data/
+// @route   GET /api/v1/solenoidState/data
 // @access  Private
 const getData = (req, res) => {
   if (req.body.componentId) {

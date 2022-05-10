@@ -6,7 +6,7 @@ import {
 import generateToken from '../utilities/generateToken.js';
 
 // @desc    Auth user & get token
-// @route   POST /api/users/login
+// @route   POST /api/v1/users/login
 // @access  Public
 const loginUser = (req, res) => {
   const { email, password } = req.body;
@@ -29,7 +29,7 @@ const loginUser = (req, res) => {
 };
 
 // @desc    Register a new user
-// @route   POST /api/users
+// @route   POST /api/v1/users
 // @access  Public
 const registerUser = (req, res) => {
   const { name, email, password } = req.body;
