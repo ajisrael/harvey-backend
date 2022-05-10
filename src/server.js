@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import actionsRoutes from './routes/actionsRoutes.js';
 import nodeRoutes from './routes/nodeRoutes.js';
 import gardenBedRoutes from './routes/gardenBedRoutes.js';
 import pumpRoutes from './routes/pumpRoutes.js';
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
+app.use('/api/v1/actions', actionsRoutes);
 app.use('/api/v1/node', nodeRoutes);
 app.use('/api/v1/gardenBed', gardenBedRoutes);
 app.use('/api/v1/pumpState', pumpRoutes);
