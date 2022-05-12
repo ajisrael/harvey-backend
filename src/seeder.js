@@ -80,9 +80,20 @@ const importData = () => {
   users.forEach((entry) => saveUserData(entry));
 };
 
+const resetDB = (setup = false) => {
+  deleteData();
+  if (setup) {
+    tryToCreateTables();
+  }
+  importData();
+};
+
 if (process.argv[2] === '-d') {
   deleteData();
-} else {
+}
+if (process.argv[2] === '-i') {
   tryToCreateTables();
   importData();
 }
+
+export { resetDB };

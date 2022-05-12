@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node src/server",
     "dev": "nodemon src/server",
-    "data:import": "node src/seeder.js",
-    "data:delete": "node src/seeder.js -d"
+    "data:import": "node src/seeder.js -i",
+    "data:delete": "node src/seeder.js -d",
+    "test": "mocha \"test/**/**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "mocha": "^10.0.0",
     "nodemon": "^2.0.15"
   }
 }
