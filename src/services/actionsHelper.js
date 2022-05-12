@@ -23,8 +23,6 @@ function deleteActionData() {
 function convertActionDataBedIdsToArray(actionData) {
   let convertedActionData = [];
 
-  console.log(actionData);
-
   actionData.forEach((entry) => {
     const convertedEntry = {
       id: entry.id,
@@ -58,10 +56,12 @@ function getActionData(page = 1) {
 }
 
 function getActionDataById(id) {
-  const data = db.query(
+  const rawData = db.query(
     `SELECT * FROM ${actionTableName} WHERE id = '${id}' LIMIT 1`,
     {}
   );
+
+  const data = convertActionDataBedIdsToArray(rawData);
 
   return data[0];
 }
