@@ -8,9 +8,11 @@ import {
 } from '../../../src/services/actionsHelper.js';
 import serverConfig from '../../../src/config/serverConfig.js';
 
-resetDB();
-
 describe('actionsHelper', function () {
+  before((done) => {
+    resetDB();
+    done();
+  });
   describe('getActionData', function () {
     it('should return a page of action data', function () {
       const result = getActionData();

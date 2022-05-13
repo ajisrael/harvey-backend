@@ -6,6 +6,7 @@ function createActionTable() {
   return db.run(
     `CREATE TABLE ${actionTableName}( ` +
       'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+      'actionName TEXT UNIQUE, ' +
       'bedIds BLOB, ' +
       'actionType TEXT, ' +
       'actionCompletedType TEXT, ' +
@@ -26,6 +27,7 @@ function convertActionDataBedIdsToArray(actionData) {
   actionData.forEach((entry) => {
     const convertedEntry = {
       id: entry.id,
+      actionName: entry.actionName,
       actionType: entry.actionType,
       actionCompletedType: entry.actionCompletedType,
       actionCompleted: entry.actionCompleted,
@@ -66,14 +68,36 @@ function getActionDataById(id) {
   return data[0];
 }
 
+function getActionDataByName(actionName) {
+  const rawData = db.query(
+    `SELECT * FROM ${actionTableName} WHERE actionName = '${actionName}' LIMIT 1`,
+    {}
+  );
+
+  const data = convertActionDataBedIdsToArray(rawData);
+
+  return data[0];
+}
+
 function saveActionData(actionData) {
-  const { bedIds, actionType, actionCompletedType, actionCompleted } =
-    actionData;
+  const {
+    actionName,
+    bedIds,
+    actionType,
+    actionCompletedType,
+    actionCompleted,
+  } = actionData;
   const bedIdsString = bedIds.join(',');
   const result = db.run(
-    `INSERT INTO ${actionTableName} (bedIds, actionType, actionCompletedType, actionCompleted) ` +
-      `VALUES (@bedIdsString, @actionType, @actionCompletedType, @actionCompleted)`,
-    { bedIdsString, actionType, actionCompletedType, actionCompleted }
+    `INSERT INTO ${actionTableName} (actionName, bedIds, actionType, actionCompletedType, actionCompleted) ` +
+      `VALUES (@actionName, @bedIdsString, @actionType, @actionCompletedType, @actionCompleted)`,
+    {
+      actionName,
+      bedIdsString,
+      actionType,
+      actionCompletedType,
+      actionCompleted,
+    }
   );
 
   let message = 'Error in saving action data';
@@ -89,5 +113,6 @@ export {
   deleteActionData,
   getActionData,
   getActionDataById,
+  getActionDataByName,
   saveActionData,
 };

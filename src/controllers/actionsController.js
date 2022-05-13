@@ -1,6 +1,7 @@
 import {
   getActionData,
   getActionDataById,
+  getActionDataByName,
   saveActionData,
 } from '../services/actionsHelper.js';
 
@@ -11,8 +12,13 @@ const getData = (req, res) => {
   const page = req.query.page ? req.query.page : 1;
   if (req.body.actionId) {
     const actionId = req.body.actionId;
-    console.log(`Returning action data for bed ${actionId}`);
-    const payload = getActionDataById(page, actionId);
+    console.log(`Returning action data for action ${actionId}`);
+    const payload = getActionDataById(actionId);
+    res.json(payload);
+  } else if (req.body.actionName) {
+    const actionName = req.body.actionName;
+    console.log(`Returning action data for action ${actionName}`);
+    const payload = getActionDataByName(actionName);
     res.json(payload);
   } else {
     console.log(`Returning all action data`);
@@ -25,8 +31,8 @@ const getData = (req, res) => {
 // @route   POST /api/v1/actions/data
 // @access  Private
 const postData = (req, res) => {
-  const actionId = req.body.actionId;
-  console.log(`Data received from action ${actionId}:`);
+  const actionName = req.body.actionName;
+  console.log(`Data received from action ${actionName}:`);
   console.log(req.body);
 
   const actionData = {
