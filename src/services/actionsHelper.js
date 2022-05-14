@@ -1,6 +1,7 @@
 import db from '../utilities/db.js';
 import serverConfig from '../config/serverConfig.js';
 import { actionTableName } from '../constants/tableNames.js';
+import { actionsSaveError, actionsSaveSuccess } from '../constants/messages.js';
 
 function createActionTable() {
   return db.run(
@@ -100,9 +101,9 @@ function saveActionData(actionData) {
     }
   );
 
-  let message = 'Error in saving action data';
+  let message = actionsSaveError;
   if (result.changes) {
-    message = 'Action data saved successfully';
+    message = actionsSaveSuccess;
   }
 
   return { message };
