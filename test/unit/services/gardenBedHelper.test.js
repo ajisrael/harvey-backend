@@ -8,6 +8,7 @@ import {
   saveGardenBedData,
 } from '../../../src/services/gardenBedHelper.js';
 import serverConfig from '../../../src/config/serverConfig.js';
+import { gardenBedSaveSuccess } from '../../../src/constants/messages.js';
 
 describe('gardenBedHelper', function () {
   beforeEach((done) => {
@@ -77,7 +78,7 @@ describe('gardenBedHelper', function () {
         humidity: 0.9,
       };
 
-      const message = 'Garden bed data saved successfully';
+      const message = gardenBedSaveSuccess;
 
       equal(saveGardenBedData(newGardenBedData).message, message);
     });
