@@ -1,6 +1,16 @@
 import db from '../utilities/db.js';
 import { pumpStateTableName } from '../constants/tableNames.js';
+import { pumpSaveError, pumpSaveSuccess } from '../constants/messages.js';
 import serverConfig from '../config/serverConfig.js';
+
+function activatePump(componentId) {
+  console.log(`Activating ${componentId} pump.`);
+  updatePumpState(componentId, serverConfig.pumpOn);
+  setTimeout(() => {
+    console.log(`Timeout for ${componentId} pump reached.`);
+    deactivatePump(componentId);
+  }, serverConfig.pumpDelay);
+}
 
 function createPumpStateTable() {
   return db.run(
@@ -13,6 +23,11 @@ function createPumpStateTable() {
       '); ',
     {}
   );
+}
+
+function deactivatePump(componentId) {
+  console.log(`Deactivating ${componentId} pump.`);
+  updatePumpState(componentId, serverConfig.pumpOff);
 }
 
 function deletePumpStateData() {
@@ -38,6 +53,18 @@ function getPumpStateDataById(componentId) {
   };
 }
 
+function getPumpStateById(componentId) {
+  const pumpStateData = db.query(
+    `SELECT pumpState FROM ${pumpStateTableName} WHERE componentId = '${componentId}' LIMIT 1`,
+    {}
+  );
+  return pumpStateData[0].pumpState;
+}
+
+function isPumpActive(componentId) {
+  return getPumpStateById(componentId) !== 0;
+}
+
 function savePumpStateData(pumpStateData) {
   const { componentId, pumpState, entryActive } = pumpStateData;
   const result = db.run(
@@ -58,32 +85,6 @@ function updatePumpState(componentId, pumpState) {
     `UPDATE ${pumpStateTableName} SET pumpState = ${pumpState} WHERE componentId = '${componentId}';`,
     {}
   );
-}
-
-function getPumpStateById(componentId) {
-  const pumpStateData = db.query(
-    `SELECT pumpState FROM ${pumpStateTableName} WHERE componentId = '${componentId}' LIMIT 1`,
-    {}
-  );
-  return pumpStateData[0].pumpState;
-}
-
-function isPumpActive(componentId) {
-  return getPumpStateById(componentId) !== 0;
-}
-
-function activatePump(componentId) {
-  console.log(`Activating ${componentId} pump.`);
-  updatePumpState(componentId, serverConfig.pumpOn);
-  setTimeout(() => {
-    console.log(`Timeout for ${componentId} pump reached.`);
-    deactivatePump(componentId);
-  }, serverConfig.pumpDelay);
-}
-
-function deactivatePump(componentId) {
-  console.log(`Deactivating ${componentId} pump.`);
-  updatePumpState(componentId, serverConfig.pumpOff);
 }
 
 export {
