@@ -72,9 +72,9 @@ function savePumpStateData(pumpStateData) {
     { componentId, pumpState, entryActive }
   );
 
-  let message = 'Error in saving pump state data';
+  let message = pumpSaveError;
   if (result.changes) {
-    message = 'Pump state data saved successfully';
+    message = pumpSaveSuccess;
   }
 
   return { message };

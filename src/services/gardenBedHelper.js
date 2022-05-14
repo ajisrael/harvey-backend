@@ -1,6 +1,10 @@
 import db from '../utilities/db.js';
 import serverConfig from '../config/serverConfig.js';
 import { gardenBedTableName } from '../constants/tableNames.js';
+import {
+  gardenBedSaveError,
+  gardenBedSaveSuccess,
+} from '../constants/messages.js';
 
 function createGardenBedTable() {
   return db.run(
@@ -57,9 +61,9 @@ function saveGardenBedData(gardenBedData) {
     { bedId, airTemp, soilTemp, light, moisture, humidity }
   );
 
-  let message = 'Error in saving garden bed data';
+  let message = gardenBedSaveError;
   if (result.changes) {
-    message = 'Garden bed data saved successfully';
+    message = gardenBedSaveSuccess;
   }
 
   return { message };
