@@ -1,10 +1,10 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
-import server from '../../src/server.js';
-import { resetDB } from '../../src/seeder.js';
-import generateToken from '../../src/utilities/generateToken.js';
-import actionData from '../../src/data/actionData.js';
+import server from '../../../src/server.js';
+import { resetDB } from '../../../src/seeder.js';
+import generateToken from '../../../src/utilities/generateToken.js';
+import actionData from '../../../src/data/actionData.js';
 
 const should = chai.should();
 chai.use(chaiHttp);
