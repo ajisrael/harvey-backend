@@ -4,12 +4,18 @@ import { pumpSaveError, pumpSaveSuccess } from '../constants/messages.js';
 import serverConfig from '../config/serverConfig.js';
 
 function activatePump(componentId) {
-  console.log(`Activating ${componentId} pump.`);
-  updatePumpState(componentId, serverConfig.pumpOn);
-  setTimeout(() => {
-    console.log(`Timeout for ${componentId} pump reached.`);
-    deactivatePump(componentId);
-  }, serverConfig.pumpDelay);
+  try {
+    console.log(`Activating ${componentId} pump.`);
+    updatePumpState(componentId, serverConfig.pumpOn);
+    setTimeout(() => {
+      console.log(`Timeout for ${componentId} pump reached.`);
+      deactivatePump(componentId);
+    }, serverConfig.pumpDelay);
+  } catch (error) {
+    console.log(error.message);
+    return false;
+  }
+  return true;
 }
 
 function createPumpStateTable() {

@@ -43,7 +43,10 @@ function checkMoistureLevels(req, res, next) {
     if (shouldActivateSolenoid(moistureLevel) && !isSolenoidActive(bedId)) {
       activateSolenoid(bedId);
       if (!isPumpActive(pumpId)) {
-        activatePump(pumpId);
+        const pumpActivated = activatePump(pumpId);
+        if (!pumpActivated) {
+          throw new Error(`Failed to activate pump ${pumpId}`);
+        }
       }
     } else if (
       shouldDeactivateSolenoid(moistureLevel) &&
@@ -51,7 +54,10 @@ function checkMoistureLevels(req, res, next) {
     ) {
       deactivateSolenoid(bedId);
       if (isPumpActive(pumpId) && !areAnySolenoidsForPumpActive(pumpId)) {
-        deactivatePump(pumpId);
+        const pumpDeactivated = deactivatePump(pumpId);
+        if (!pumpDeactivated) {
+          throw new Error(`Failed to deactivate pump ${pumpId}`);
+        }
       }
     }
 
