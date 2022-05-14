@@ -1,18 +1,31 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import sinon from 'sinon';
 import server from '../../src/server.js';
 import { resetDB } from '../../src/seeder.js';
 import generateToken from '../../src/utilities/generateToken.js';
 import actionData from '../../src/data/actionData.js';
 
-let should = chai.should();
+const should = chai.should();
 chai.use(chaiHttp);
 
 describe('Actions Routes', () => {
   let token = '';
   before((done) => {
+    sinon.stub(console, 'log'); // disable console.log
+    sinon.stub(console, 'info'); // disable console.info
+    sinon.stub(console, 'warn'); // disable console.warn
+    sinon.stub(console, 'error'); // disable console.error
     resetDB();
     token = generateToken('1');
+    done();
+  });
+
+  after((done) => {
+    console.log.restore();
+    console.info.restore();
+    console.warn.restore();
+    console.error.restore();
     done();
   });
 

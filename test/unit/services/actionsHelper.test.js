@@ -1,4 +1,6 @@
 import { equal } from 'assert';
+import chai from 'chai';
+import sinon from 'sinon';
 import { resetDB } from '../../../src/seeder.js';
 import actionData from '../../../src/data/actionData.js';
 import {
@@ -8,11 +10,26 @@ import {
 } from '../../../src/services/actionsHelper.js';
 import serverConfig from '../../../src/config/serverConfig.js';
 
+const should = chai.should();
+
 describe('actionsHelper', function () {
-  before((done) => {
+  beforeEach((done) => {
+    sinon.stub(console, 'log'); // disable console.log
+    sinon.stub(console, 'info'); // disable console.info
+    sinon.stub(console, 'warn'); // disable console.warn
+    sinon.stub(console, 'error'); // disable console.error
     resetDB();
     done();
   });
+
+  afterEach((done) => {
+    console.log.restore();
+    console.info.restore();
+    console.warn.restore();
+    console.error.restore();
+    done();
+  });
+
   describe('getActionData', function () {
     it('should return a page of action data', function () {
       const result = getActionData();

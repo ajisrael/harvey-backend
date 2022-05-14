@@ -1,4 +1,5 @@
 import { equal } from 'assert';
+import sinon from 'sinon';
 import { resetDB } from '../../../src/seeder.js';
 import gardenBedData from '../../../src/data/gardenBedData.js';
 import {
@@ -8,9 +9,24 @@ import {
 } from '../../../src/services/gardenBedHelper.js';
 import serverConfig from '../../../src/config/serverConfig.js';
 
-resetDB();
-
 describe('gardenBedHelper', function () {
+  beforeEach((done) => {
+    sinon.stub(console, 'log'); // disable console.log
+    sinon.stub(console, 'info'); // disable console.info
+    sinon.stub(console, 'warn'); // disable console.warn
+    sinon.stub(console, 'error'); // disable console.error
+    resetDB();
+    done();
+  });
+
+  afterEach((done) => {
+    console.log.restore();
+    console.info.restore();
+    console.warn.restore();
+    console.error.restore();
+    done();
+  });
+
   describe('getGardenBedData', function () {
     it('should return a page of garden bed data', function () {
       const result = getGardenBedData();
