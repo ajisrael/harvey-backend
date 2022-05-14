@@ -13,7 +13,7 @@ import serverConfig from '../../../src/config/serverConfig.js';
 
 const should = chai.should();
 
-describe('actionsHelper', function () {
+describe('actionsHelper', () => {
   beforeEach((done) => {
     sinon.stub(console, 'log'); // disable console.log
     sinon.stub(console, 'info'); // disable console.info
@@ -31,8 +31,8 @@ describe('actionsHelper', function () {
     done();
   });
 
-  describe('getActionData', function () {
-    it('should return a page of action data', function () {
+  describe('getActionData', () => {
+    it('should return a page of action data', () => {
       const result = getActionData();
       const expectedData =
         actionData.length < serverConfig.listPerPage
@@ -56,8 +56,8 @@ describe('actionsHelper', function () {
     });
   });
 
-  describe('getActionDataById', function () {
-    it('should return an action based on its id', function () {
+  describe('getActionDataById', () => {
+    it('should return an action based on its id', () => {
       const actionDataFromDB = getActionData();
       const result = getActionDataById(actionDataFromDB.data[0].id);
 
@@ -75,8 +75,8 @@ describe('actionsHelper', function () {
     });
   });
 
-  describe('saveActionData', function () {
-    it('should get success message after saving action data', function () {
+  describe('saveActionData', () => {
+    it('should get success message after saving action data', () => {
       const newActionData = {
         bedIds: ['Bed_2', 'Bed_3'],
         actionType: 'Water',

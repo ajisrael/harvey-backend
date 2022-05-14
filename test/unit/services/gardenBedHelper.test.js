@@ -10,7 +10,7 @@ import {
 import serverConfig from '../../../src/config/serverConfig.js';
 import { gardenBedSaveSuccess } from '../../../src/constants/messages.js';
 
-describe('gardenBedHelper', function () {
+describe('gardenBedHelper', () => {
   beforeEach((done) => {
     sinon.stub(console, 'log'); // disable console.log
     sinon.stub(console, 'info'); // disable console.info
@@ -28,8 +28,8 @@ describe('gardenBedHelper', function () {
     done();
   });
 
-  describe('getGardenBedData', function () {
-    it('should return a page of garden bed data', function () {
+  describe('getGardenBedData', () => {
+    it('should return a page of garden bed data', () => {
       const result = getGardenBedData();
       const expectedData = gardenBedData.slice(0, serverConfig.listPerPage - 1);
 
@@ -46,8 +46,8 @@ describe('gardenBedHelper', function () {
     });
   });
 
-  describe('getGardenBedDataById', function () {
-    it('should return a page of data for one garden bed', function () {
+  describe('getGardenBedDataById', () => {
+    it('should return a page of data for one garden bed', () => {
       const result = getGardenBedDataById(1, 'Bed_0');
 
       const expectedData = gardenBedData.filter((entry) => {
@@ -67,8 +67,8 @@ describe('gardenBedHelper', function () {
     });
   });
 
-  describe('saveGardenBedData', function () {
-    it('should get success message after saving garden bed data', function () {
+  describe('saveGardenBedData', () => {
+    it('should get success message after saving garden bed data', () => {
       const newGardenBedData = {
         bedId: 'Bed_5',
         airTemp: 91.1,
