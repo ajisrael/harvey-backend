@@ -1,7 +1,7 @@
 import { equal } from 'assert';
 import chai from 'chai';
-import sinon from 'sinon';
 import { resetDB } from '../../../src/seeder.js';
+import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
 import actionData from '../../../src/data/actionData.js';
 import { actionsSaveSuccess } from '../../../src/constants/messages.js';
 import {
@@ -15,19 +15,13 @@ const should = chai.should();
 
 describe('actionsHelper', () => {
   beforeEach((done) => {
-    sinon.stub(console, 'log'); // disable console.log
-    sinon.stub(console, 'info'); // disable console.info
-    sinon.stub(console, 'warn'); // disable console.warn
-    sinon.stub(console, 'error'); // disable console.error
+    stubLogs();
     resetDB();
     done();
   });
 
   afterEach((done) => {
-    console.log.restore();
-    console.info.restore();
-    console.warn.restore();
-    console.error.restore();
+    restoreLogs();
     done();
   });
 

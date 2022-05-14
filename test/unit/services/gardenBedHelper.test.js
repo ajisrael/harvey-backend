@@ -1,6 +1,6 @@
 import { equal } from 'assert';
-import sinon from 'sinon';
 import { resetDB } from '../../../src/seeder.js';
+import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
 import gardenBedData from '../../../src/data/gardenBedData.js';
 import {
   getGardenBedData,
@@ -12,19 +12,13 @@ import { gardenBedSaveSuccess } from '../../../src/constants/messages.js';
 
 describe('gardenBedHelper', () => {
   beforeEach((done) => {
-    sinon.stub(console, 'log'); // disable console.log
-    sinon.stub(console, 'info'); // disable console.info
-    sinon.stub(console, 'warn'); // disable console.warn
-    sinon.stub(console, 'error'); // disable console.error
+    stubLogs();
     resetDB();
     done();
   });
 
   afterEach((done) => {
-    console.log.restore();
-    console.info.restore();
-    console.warn.restore();
-    console.error.restore();
+    restoreLogs();
     done();
   });
 
