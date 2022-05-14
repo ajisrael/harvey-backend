@@ -3,6 +3,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 import { resetDB } from '../../../src/seeder.js';
 import actionData from '../../../src/data/actionData.js';
+import { actionsSaveSuccess } from '../../../src/constants/messages.js';
 import {
   getActionData,
   getActionDataById,
@@ -44,6 +45,7 @@ describe('actionsHelper', function () {
         for (let j = 0; j < result.data[i].bedIds.length; j++) {
           equal(result.data[i].bedIds[j], expectedData[i].bedIds[j]);
         }
+        equal(result.data[i].actionName, expectedData[i].actionName);
         equal(result.data[i].actionType, expectedData[i].actionType);
         equal(
           result.data[i].actionCompletedType,
@@ -66,6 +68,7 @@ describe('actionsHelper', function () {
       for (let i = 0; i < result.bedIds.length; i++) {
         equal(result.bedIds[i], expectedData.bedIds[i]);
       }
+      equal(result.actionName, expectedData.actionName);
       equal(result.actionType, expectedData.actionType);
       equal(result.actionCompletedType, expectedData.actionCompletedType);
       equal(result.actionCompleted, expectedData.actionCompleted);
@@ -81,7 +84,7 @@ describe('actionsHelper', function () {
         actionCompleted: 60,
       };
 
-      const message = 'Action data saved successfully';
+      const message = actionsSaveSuccess;
 
       equal(saveActionData(newActionData).message, message);
     });
