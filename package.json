@@ -8,7 +8,7 @@
     "dev": "nodemon src/server",
     "data:import": "node src/seeder.js -i",
     "data:delete": "node src/seeder.js -d",
-    "test": "mocha \"test/**/**/*.js\" --exit"
+    "test": "mocha \"test/**/**/*.js\" --exit --timeout 10000"
   },
   "repository": {
     "type": "git",
