@@ -10,6 +10,9 @@ const pumpSaveSuccess = 'Pump state data saved successfully';
 const solenoidSaveError = 'Error in saving solenoid state data';
 const solenoidSaveSuccess = 'Solenoid state data saved successfully';
 
+const userSaveError = 'Error in saving user data';
+const userSaveSuccess = 'User data saved successfully';
+
 export {
   actionsSaveError,
   actionsSaveSuccess,
@@ -19,4 +22,6 @@ export {
   pumpSaveSuccess,
   solenoidSaveError,
   solenoidSaveSuccess,
+  userSaveError,
+  userSaveSuccess,
 };

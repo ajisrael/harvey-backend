@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import db from '../utilities/db.js';
 import { userTableName } from '../constants/tableNames.js';
+import { userSaveError, userSaveSuccess } from '../constants/messages.js';
 
 const queryParams = 'id, name, email, isAdmin';
 
@@ -71,9 +72,9 @@ function saveUserData(userData) {
     { name, email, passwordHash, isAdmin }
   );
 
-  let message = 'Error in saving user data';
+  let message = userSaveError;
   if (result.changes) {
-    message = 'User data saved successfully';
+    message = userSaveSuccess;
   }
 
   return { message };
