@@ -2,6 +2,15 @@ import db from '../utilities/db.js';
 import { solenoidStateTableName } from '../constants/tableNames.js';
 import serverConfig from '../config/serverConfig.js';
 
+function activateSolenoid(componentId) {
+  console.log(`Activating ${componentId} solenoid.`);
+  updateSolenoidState(componentId, serverConfig.solenoidOn);
+  setTimeout(() => {
+    console.log(`Timeout for ${componentId} solenoid reached.`);
+    deactivateSolenoid(componentId);
+  }, serverConfig.solenoidDelay);
+}
+
 function createSolenoidStateTable() {
   return db.run(
     `CREATE TABLE ${solenoidStateTableName}( ` +
@@ -13,6 +22,11 @@ function createSolenoidStateTable() {
       '); ',
     {}
   );
+}
+
+function deactivateSolenoid(componentId) {
+  console.log(`Deactivating ${componentId} solenoid.`);
+  updateSolenoidState(componentId, serverConfig.solenoidOff);
 }
 
 function deleteSolenoidStateData() {
@@ -38,6 +52,18 @@ function getSolenoidStateDataById(componentId) {
   };
 }
 
+function getSolenoidStateById(componentId) {
+  const solenoidStateData = db.query(
+    `SELECT solenoidState FROM ${solenoidStateTableName} WHERE componentId = '${componentId}' LIMIT 1`,
+    {}
+  );
+  return solenoidStateData[0].solenoidState;
+}
+
+function isSolenoidActive(componentId) {
+  return getSolenoidStateById(componentId) !== 0;
+}
+
 function saveSolenoidStateData(solenoidStateData) {
   const { componentId, solenoidState, entryActive } = solenoidStateData;
   const result = db.run(
@@ -60,40 +86,14 @@ function updateSolenoidState(componentId, solenoidState) {
   );
 }
 
-function getSolenoidStateById(componentId) {
-  const solenoidStateData = db.query(
-    `SELECT solenoidState FROM ${solenoidStateTableName} WHERE componentId = '${componentId}' LIMIT 1`,
-    {}
-  );
-  return solenoidStateData[0].solenoidState;
-}
-
-function isSolenoidActive(componentId) {
-  return getSolenoidStateById(componentId) !== 0;
-}
-
-function activateSolenoid(componentId) {
-  console.log(`Activating ${componentId} solenoid.`);
-  updateSolenoidState(componentId, serverConfig.solenoidOn);
-  setTimeout(() => {
-    console.log(`Timeout for ${componentId} solenoid reached.`);
-    deactivateSolenoid(componentId);
-  }, serverConfig.solenoidDelay);
-}
-
-function deactivateSolenoid(componentId) {
-  console.log(`Deactivating ${componentId} solenoid.`);
-  updateSolenoidState(componentId, serverConfig.solenoidOff);
-}
-
 export {
+  activateSolenoid,
   createSolenoidStateTable,
+  deactivateSolenoid,
   deleteSolenoidStateData,
   getSolenoidStateData,
   getSolenoidStateDataById,
   getSolenoidStateById,
   isSolenoidActive,
   saveSolenoidStateData,
-  activateSolenoid,
-  deactivateSolenoid,
 };
