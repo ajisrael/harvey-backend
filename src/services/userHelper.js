@@ -85,13 +85,6 @@ function saveUserDataAndReturnUser(name, email, password, isAdmin = 0) {
   return userData;
 }
 
-function updateUserName(id, name) {
-  const result = db.run(
-    `UPDATE ${userTableName} SET name = ${name} WHERE id = '${id}';`,
-    {}
-  );
-}
-
 function updateUserEmail(id, email) {
   const result = db.run(
     `UPDATE ${userTableName} SET email = ${email} WHERE id = '${id}';`,
@@ -99,16 +92,23 @@ function updateUserEmail(id, email) {
   );
 }
 
-function updateUserPassword(id, password) {
+function updateUserIsAdmin(id, isAdmin) {
   const result = db.run(
-    `UPDATE ${userTableName} SET password = ${password} WHERE id = '${id}';`,
+    `UPDATE ${userTableName} SET isAdmin = ${isAdmin} WHERE id = '${id}';`,
     {}
   );
 }
 
-function updateUserIsAdmin(id, isAdmin) {
+function updateUserName(id, name) {
   const result = db.run(
-    `UPDATE ${userTableName} SET isAdmin = ${isAdmin} WHERE id = '${id}';`,
+    `UPDATE ${userTableName} SET name = ${name} WHERE id = '${id}';`,
+    {}
+  );
+}
+
+function updateUserPassword(id, password) {
+  const result = db.run(
+    `UPDATE ${userTableName} SET password = ${password} WHERE id = '${id}';`,
     {}
   );
 }
