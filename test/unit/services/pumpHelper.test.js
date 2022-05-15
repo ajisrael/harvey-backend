@@ -11,7 +11,6 @@ import {
   isPumpActive,
   savePumpStateData,
 } from '../../../src/services/pumpHelper.js';
-import serverConfig from '../../../src/config/serverConfig.js';
 import {
   pumpSaveError,
   pumpSaveSuccess,
