@@ -22,7 +22,7 @@ function createPumpStateTable() {
   return db.run(
     `CREATE TABLE ${pumpStateTableName}( ` +
       'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-      'componentId TEXT, ' +
+      'componentId TEXT UNIQUE, ' +
       'pumpState INTEGER, ' +
       'entryActive INTEGER, ' +
       'created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ' +
@@ -73,14 +73,22 @@ function isPumpActive(componentId) {
 
 function savePumpStateData(pumpStateData) {
   const { componentId, pumpState, entryActive } = pumpStateData;
-  const result = db.run(
-    `INSERT INTO ${pumpStateTableName} (componentId, pumpState, entryActive) VALUES (@componentId, @pumpState, @entryActive)`,
-    { componentId, pumpState, entryActive }
-  );
 
   let message = pumpSaveError;
-  if (result.changes) {
-    message = pumpSaveSuccess;
+
+  try {
+    const result = db.run(
+      `INSERT INTO ${pumpStateTableName} (componentId, pumpState, entryActive) VALUES (@componentId, @pumpState, @entryActive)`,
+      { componentId, pumpState, entryActive }
+    );
+
+    if (result.changes) {
+      message = pumpSaveSuccess;
+    }
+  } catch (error) {
+    if (error.message !== 'UNIQUE constraint failed: pumpState.componentId') {
+      throw new Error(error.message);
+    }
   }
 
   return { message };
