@@ -10,7 +10,7 @@ function createUserTable() {
     `CREATE TABLE ${userTableName}( ` +
       'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
       'name TEXT, ' +
-      'email TEXT, ' +
+      'email TEXT UNIQUE, ' +
       'password BLOB, ' +
       'isAdmin INTEGER, ' +
       'created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ' +
@@ -67,14 +67,21 @@ function saveUserData(userData) {
 
   const passwordHash = bcrypt.hashSync(password, 10);
 
-  const result = db.run(
-    `INSERT INTO ${userTableName} (name, email, password, isAdmin) VALUES (@name, @email, @passwordHash, @isAdmin)`,
-    { name, email, passwordHash, isAdmin }
-  );
-
   let message = userSaveError;
-  if (result.changes) {
-    message = userSaveSuccess;
+
+  try {
+    const result = db.run(
+      `INSERT INTO ${userTableName} (name, email, password, isAdmin) VALUES (@name, @email, @passwordHash, @isAdmin)`,
+      { name, email, passwordHash, isAdmin }
+    );
+
+    if (result.changes) {
+      message = userSaveSuccess;
+    }
+  } catch (error) {
+    if (error.message !== 'UNIQUE constraint failed: user.email') {
+      throw new Error(error.message);
+    }
   }
 
   return { message };
