@@ -25,7 +25,7 @@ function createSolenoidStateTable() {
   return db.run(
     `CREATE TABLE ${solenoidStateTableName}( ` +
       'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-      'componentId TEXT, ' +
+      'componentId TEXT UNIQUE, ' +
       'solenoidState INTEGER, ' +
       'entryActive INTEGER, ' +
       'created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ' +
@@ -76,14 +76,24 @@ function isSolenoidActive(componentId) {
 
 function saveSolenoidStateData(solenoidStateData) {
   const { componentId, solenoidState, entryActive } = solenoidStateData;
-  const result = db.run(
-    `INSERT INTO ${solenoidStateTableName} (componentId, solenoidState, entryActive) VALUES (@componentId, @solenoidState, @entryActive)`,
-    { componentId, solenoidState, entryActive }
-  );
 
   let message = solenoidSaveError;
-  if (result.changes) {
-    message = solenoidSaveSuccess;
+
+  try {
+    const result = db.run(
+      `INSERT INTO ${solenoidStateTableName} (componentId, solenoidState, entryActive) VALUES (@componentId, @solenoidState, @entryActive)`,
+      { componentId, solenoidState, entryActive }
+    );
+
+    if (result.changes) {
+      message = solenoidSaveSuccess;
+    }
+  } catch (error) {
+    if (
+      error.message !== 'UNIQUE constraint failed: solenoidState.componentId'
+    ) {
+      throw new Error(error.message);
+    }
   }
 
   return { message };
