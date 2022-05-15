@@ -71,9 +71,9 @@ function saveSolenoidStateData(solenoidStateData) {
     { componentId, solenoidState, entryActive }
   );
 
-  let message = 'Error in saving solenoid state data';
+  let message = solenoidSaveError;
   if (result.changes) {
-    message = 'Solenoid state data saved successfully';
+    message = solenoidSaveSuccess;
   }
 
   return { message };

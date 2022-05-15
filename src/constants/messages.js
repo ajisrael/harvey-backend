@@ -7,6 +7,9 @@ const gardenBedSaveSuccess = 'Garden bed data saved successfully';
 const pumpSaveError = 'Error in saving pump state data';
 const pumpSaveSuccess = 'Pump state data saved successfully';
 
+const solenoidSaveError = 'Error in saving solenoid state data';
+const solenoidSaveSuccess = 'Solenoid state data saved successfully';
+
 export {
   actionsSaveError,
   actionsSaveSuccess,
@@ -14,4 +17,6 @@ export {
   gardenBedSaveSuccess,
   pumpSaveError,
   pumpSaveSuccess,
+  solenoidSaveError,
+  solenoidSaveSuccess,
 };
