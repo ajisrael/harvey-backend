@@ -1,14 +1,24 @@
 import db from '../utilities/db.js';
 import { solenoidStateTableName } from '../constants/tableNames.js';
 import serverConfig from '../config/serverConfig.js';
+import {
+  solenoidSaveError,
+  solenoidSaveSuccess,
+} from '../constants/messages.js';
 
 function activateSolenoid(componentId) {
+  let solenoidActivated = false;
+
   console.log(`Activating ${componentId} solenoid.`);
-  updateSolenoidState(componentId, serverConfig.solenoidOn);
+
+  solenoidActivated = updateSolenoidState(componentId, serverConfig.solenoidOn);
+
   setTimeout(() => {
     console.log(`Timeout for ${componentId} solenoid reached.`);
     deactivateSolenoid(componentId);
   }, serverConfig.solenoidDelay);
+
+  return solenoidActivated;
 }
 
 function createSolenoidStateTable() {
@@ -26,7 +36,7 @@ function createSolenoidStateTable() {
 
 function deactivateSolenoid(componentId) {
   console.log(`Deactivating ${componentId} solenoid.`);
-  updateSolenoidState(componentId, serverConfig.solenoidOff);
+  return updateSolenoidState(componentId, serverConfig.solenoidOff);
 }
 
 function deleteSolenoidStateData() {
@@ -84,6 +94,8 @@ function updateSolenoidState(componentId, solenoidState) {
     `UPDATE ${solenoidStateTableName} SET solenoidState = ${solenoidState} WHERE componentId = '${componentId}';`,
     {}
   );
+
+  return result.changes !== 0;
 }
 
 export {
