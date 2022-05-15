@@ -4,18 +4,18 @@ import { pumpSaveError, pumpSaveSuccess } from '../constants/messages.js';
 import serverConfig from '../config/serverConfig.js';
 
 function activatePump(componentId) {
-  try {
-    console.log(`Activating ${componentId} pump.`);
-    updatePumpState(componentId, serverConfig.pumpOn);
-    setTimeout(() => {
-      console.log(`Timeout for ${componentId} pump reached.`);
-      deactivatePump(componentId);
-    }, serverConfig.pumpDelay);
-  } catch (error) {
-    console.log(error.message);
-    return false;
-  }
-  return true;
+  let pumpActivated = false;
+
+  console.log(`Activating ${componentId} pump.`);
+
+  pumpActivated = updatePumpState(componentId, serverConfig.pumpOn);
+
+  setTimeout(() => {
+    console.log(`Timeout for ${componentId} pump reached.`);
+    deactivatePump(componentId);
+  }, serverConfig.pumpDelay);
+
+  return pumpActivated;
 }
 
 function createPumpStateTable() {
@@ -33,7 +33,7 @@ function createPumpStateTable() {
 
 function deactivatePump(componentId) {
   console.log(`Deactivating ${componentId} pump.`);
-  updatePumpState(componentId, serverConfig.pumpOff);
+  return updatePumpState(componentId, serverConfig.pumpOff);
 }
 
 function deletePumpStateData() {
@@ -91,6 +91,8 @@ function updatePumpState(componentId, pumpState) {
     `UPDATE ${pumpStateTableName} SET pumpState = ${pumpState} WHERE componentId = '${componentId}';`,
     {}
   );
+
+  return result.changes !== 0;
 }
 
 export {
