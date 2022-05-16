@@ -33,7 +33,7 @@ function getUserData() {
 
 function getUserDataById(id) {
   const data = db.query(
-    `SELECT ${queryParams} FROM ${userTableName} WHERE id = '${id} LIMIT 1'`,
+    `SELECT ${queryParams} FROM ${userTableName} WHERE id = '${id}' LIMIT 1`,
     {}
   );
 
