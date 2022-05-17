@@ -121,23 +121,23 @@ function updateUserEmail(id, email) {
 
 function updateUserIsAdmin(id, isAdmin) {
   const result = db.run(
-    `UPDATE ${userTableName} SET isAdmin = ${isAdmin} WHERE id = '${id}';`,
+    `UPDATE ${userTableName} SET isAdmin = '${isAdmin}' WHERE id = '${id}';`,
     {}
   );
 }
 
 function updateUserName(id, name) {
   const result = db.run(
-    `UPDATE ${userTableName} SET name = ${name} WHERE id = '${id}';`,
+    `UPDATE ${userTableName} SET name = '${name}' WHERE id = '${id}';`,
     {}
   );
 }
 
-function updateUserPassword(id, password) {
-  const result = db.run(
-    `UPDATE ${userTableName} SET password = ${password} WHERE id = '${id}';`,
-    {}
-  );
+function updateUserPassword(email, oldPassword, newPassword) {
+    const result = db.run(
+      `UPDATE ${userTableName} SET password = '${newPassword}' WHERE email = '${email}';`,
+      {}
+    );
 }
 
 export {
