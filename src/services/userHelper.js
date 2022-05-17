@@ -124,6 +124,8 @@ function updateUserIsAdmin(id, isAdmin) {
     `UPDATE ${userTableName} SET isAdmin = '${isAdmin}' WHERE id = '${id}';`,
     {}
   );
+
+  return result.changes !== 0;
 }
 
 function updateUserName(id, name) {
@@ -131,13 +133,21 @@ function updateUserName(id, name) {
     `UPDATE ${userTableName} SET name = '${name}' WHERE id = '${id}';`,
     {}
   );
+
+  return result.changes !== 0;
 }
 
 function updateUserPassword(email, oldPassword, newPassword) {
+  if (matchPassword(email, oldPassword)) {
     const result = db.run(
       `UPDATE ${userTableName} SET password = '${newPassword}' WHERE email = '${email}';`,
       {}
     );
+    return result.changes !== 0;
+  } else {
+    console.log(`Passwords did not match for ${email}.`);
+    return false;
+  }
 }
 
 export {
