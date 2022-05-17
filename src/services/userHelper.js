@@ -101,10 +101,22 @@ function saveUserDataAndReturnUser(name, email, password, isAdmin = 0) {
 }
 
 function updateUserEmail(id, email) {
-  const result = db.run(
-    `UPDATE ${userTableName} SET email = ${email} WHERE id = '${id}';`,
-    {}
-  );
+  try {
+    const result = db.run(
+      `UPDATE ${userTableName} SET email = '${email}' WHERE id = '${id}';`,
+      {}
+    );
+
+    console.log('email update result', result);
+
+    return result.changes !== 0;
+  } catch (error) {
+    if (error.message !== 'UNIQUE constraint failed: user.email') {
+      throw new Error(error.message);
+    } else {
+      return false;
+    }
+  }
 }
 
 function updateUserIsAdmin(id, isAdmin) {
