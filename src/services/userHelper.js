@@ -89,7 +89,14 @@ function saveUserData(userData) {
 
 function saveUserDataAndReturnUser(name, email, password, isAdmin = 0) {
   const userData = { name, email, password, isAdmin };
-  saveUserData(userData);
+  const resp = saveUserData(userData);
+
+  delete userData.password;
+
+  if (resp.message === userSaveError) {
+    return resp;
+  }
+
   return userData;
 }
 
