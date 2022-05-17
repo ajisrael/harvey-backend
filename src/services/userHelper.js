@@ -59,7 +59,7 @@ function getPasswordByEmail(email) {
 }
 
 function matchPassword(email, password) {
-  return bcrypt.compare(getPasswordByEmail(email).password, password);
+  return bcrypt.compareSync(password, getPasswordByEmail(email).password);
 }
 
 function saveUserData(userData) {
