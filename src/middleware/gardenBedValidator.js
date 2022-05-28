@@ -1,3 +1,5 @@
+import bedToPumpConfig from '../config/bedToPumpConfig.js';
+
 function validateGardenBedData(req, res, next) {
   let messages = [];
 
@@ -27,6 +29,10 @@ function validateGardenBedData(req, res, next) {
 
   if (!req.body.humidity) {
     messages.push('Humidity is empty');
+  }
+
+  if (!Object.keys(bedToPumpConfig).includes(req.body.bedId)) {
+    messages.push(`${req.body.bedId} is not a valid bedId`);
   }
 
   if (messages.length) {
