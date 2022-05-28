@@ -1,8 +1,14 @@
+import { gardenBedSaveError } from '../constants/messages.js';
 import {
   getGardenBedData,
   getGardenBedDataById,
   saveGardenBedData,
 } from '../services/gardenBedHelper.js';
+import {
+  calculateNewGardenStatusForBed,
+  getGardenStatusDataById,
+  updateGardenStatusData,
+} from '../services/gardenStatusHelper.js';
 
 // @desc    Return data for garden beds
 // @route   GET /api/v1/gardenBed/data
@@ -34,6 +40,17 @@ const postData = (req, res) => {
   };
 
   const message = saveGardenBedData(gardenBedData);
+
+  if (message === gardenBedSaveError) {
+    throw new Error(message);
+  }
+
+  const currentBedStatus = getGardenStatusDataById(bedId);
+  const newBedStatus = calculateNewGardenStatusForBed(
+    currentBedStatus,
+    gardenBedData
+  );
+  updateGardenStatusData(bedId, newBedStatus);
 
   res.status(200).send('data received');
 };
