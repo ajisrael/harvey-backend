@@ -54,6 +54,13 @@ function getGardenBedDataById(page = 1, bedId) {
   };
 }
 
+function getRecentGardenBedDataById(bedId) {
+  return db.query(
+    `SELECT * FROM ${gardenBedTableName} WHERE bedId = '${bedId}' ORDER BY created_at DESC LIMIT ${serverConfig.gardenBedAverageWindow}`,
+    {}
+  );
+}
+
 function saveGardenBedData(gardenBedData) {
   const { bedId, airTemp, soilTemp, light, moisture, humidity } = gardenBedData;
   const result = db.run(
@@ -74,5 +81,6 @@ export {
   deleteGardenBedData,
   getGardenBedData,
   getGardenBedDataById,
+  getRecentGardenBedDataById,
   saveGardenBedData,
 };

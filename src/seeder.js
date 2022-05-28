@@ -3,6 +3,7 @@ import sqlite from 'better-sqlite3';
 import {
   actionTableName,
   gardenBedTableName,
+  gardenStatusTableName,
   pumpStateTableName,
   solenoidStateTableName,
   userTableName,
@@ -22,6 +23,12 @@ import {
   deleteGardenBedData,
   saveGardenBedData,
 } from './services/gardenBedHelper.js';
+import {
+  calculateBedAverages,
+  createGardenStatusTable,
+  deleteGardenStatusData,
+  saveGardenStatusData,
+} from './services/gardenStatusHelper.js';
 import {
   createPumpStateTable,
   deletePumpStateData,
@@ -59,6 +66,7 @@ const tryToDeleteData = (deleteDataFunction, tableName) => {
 const deleteData = () => {
   tryToDeleteData(deleteActionData, actionTableName);
   tryToDeleteData(deleteGardenBedData, gardenBedTableName);
+  tryToDeleteData(deleteGardenStatusData, gardenStatusTableName);
   tryToDeleteData(deletePumpStateData, pumpStateTableName);
   tryToDeleteData(deleteSolenoidStateData, solenoidStateTableName);
   tryToDeleteData(deleteUserData, userTableName);
@@ -67,6 +75,7 @@ const deleteData = () => {
 const tryToCreateTables = () => {
   tryToCreateTable(createActionTable, actionTableName);
   tryToCreateTable(createGardenBedTable, gardenBedTableName);
+  tryToCreateTable(createGardenStatusTable, gardenStatusTableName);
   tryToCreateTable(createPumpStateTable, pumpStateTableName);
   tryToCreateTable(createSolenoidStateTable, solenoidStateTableName);
   tryToCreateTable(createUserTable, userTableName);
@@ -78,6 +87,7 @@ const importData = () => {
   pumpStateData.forEach((entry) => savePumpStateData(entry));
   solenoidStateData.forEach((entry) => saveSolenoidStateData(entry));
   users.forEach((entry) => saveUserData(entry));
+  calculateBedAverages().forEach((entry) => saveGardenStatusData(entry));
 };
 
 const resetDB = (setup = false) => {
