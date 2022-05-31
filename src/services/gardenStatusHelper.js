@@ -50,9 +50,10 @@ function calculateNewGardenStatusForBed(
   currentGardenStatusData,
   gardenBedData
 ) {
+  const bedId = gardenBedData.bedId;
+
   removeUnnecessaryFieldsForCalculation(gardenBedData);
 
-  const bedId = gardenBedData.bedId;
   const entryCount = currentGardenStatusData.entryCount + 1;
 
   const totals = {};
