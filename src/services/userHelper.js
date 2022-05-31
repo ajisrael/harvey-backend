@@ -58,6 +58,10 @@ function getPasswordByEmail(email) {
   return data[0];
 }
 
+function isUserAdmin(user) {
+  return user.isAdmin !== 0;
+}
+
 function matchPassword(email, password) {
   return bcrypt.compareSync(password, getPasswordByEmail(email).password);
 }
@@ -156,6 +160,7 @@ export {
   getUserData,
   getUserDataById,
   getUserDataByEmail,
+  isUserAdmin,
   matchPassword,
   saveUserData,
   saveUserDataAndReturnUser,

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { getUserDataById } from '../services/userHelper.js';
+import { getUserDataById, isUserAdmin } from '../services/userHelper.js';
 
 const protect = (req, res, next) => {
   let token;
@@ -29,4 +29,13 @@ const protect = (req, res, next) => {
   }
 };
 
-export { protect };
+const admin = (req, res, next) => {
+  if (isUserAdmin(req.user)) {
+    next();
+  } else {
+    res.status(401);
+    throw new Error('Not authorized, not an admin');
+  }
+};
+
+export { protect, admin };

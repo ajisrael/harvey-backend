@@ -4,13 +4,12 @@ import {
   validateRegistrationData,
 } from '../middleware/userValidator.js';
 import { loginUser, registerUser } from '../controllers/userController.js';
+import { admin, protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.route('/login').post(validateLoginData, loginUser);
 
-// User registration disabled until data structures added for
-// mapping beds to a garden and gardens to a list of users
-//router.route('/').post(validateRegistrationData, registerUser);
+router.route('/').post(protect, admin, validateRegistrationData, registerUser);
 
 export default router;

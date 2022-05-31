@@ -30,7 +30,7 @@ const loginUser = (req, res) => {
 
 // @desc    Register a new user
 // @route   POST /api/v1/users
-// @access  Public
+// @access  Admin
 const registerUser = (req, res) => {
   const { name, email, password } = req.body;
 
