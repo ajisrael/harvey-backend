@@ -24,7 +24,7 @@ const checkPumpStateData = (data, componentId = null) => {
   });
 };
 
-describe('Pump State Routes', () => {
+describe('Pump State Controller and Routes', () => {
   let token = '';
   before((done) => {
     stubLogs();

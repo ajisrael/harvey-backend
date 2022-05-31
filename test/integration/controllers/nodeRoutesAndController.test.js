@@ -21,7 +21,7 @@ const checkGardenNodeData = (data, nodeId = null) => {
   });
 };
 
-describe('Node Routes', () => {
+describe('Node Controller and Routes', () => {
   let token = '';
   before((done) => {
     stubLogs();

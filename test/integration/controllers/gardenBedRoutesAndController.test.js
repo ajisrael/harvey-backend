@@ -28,7 +28,7 @@ const checkGardenBedData = (data, bedId = null) => {
   });
 };
 
-describe('GardenBed Routes', () => {
+describe('GardenBed Controller and Routes', () => {
   let token = '';
   before((done) => {
     stubLogs();

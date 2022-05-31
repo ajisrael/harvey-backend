@@ -9,7 +9,7 @@ import actionData from '../../../src/data/actionData.js';
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('Actions Routes', () => {
+describe('Actions Controller and Routes', () => {
   let token = '';
   before((done) => {
     stubLogs();

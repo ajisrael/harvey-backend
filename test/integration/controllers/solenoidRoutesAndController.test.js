@@ -24,7 +24,7 @@ const checkSolenoidStateData = (data, componentId = null) => {
   });
 };
 
-describe('Solenoid State Routes', () => {
+describe('Solenoid State Controller and Routes', () => {
   let token = '';
   before((done) => {
     stubLogs();

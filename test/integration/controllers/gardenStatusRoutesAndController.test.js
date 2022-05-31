@@ -24,7 +24,7 @@ const checkGardenStatusData = (data, bedId = null) => {
   }
 };
 
-describe('GardenStatus Routes', () => {
+describe('GardenStatus Controller and Routes', () => {
   let token = '';
   before((done) => {
     stubLogs();
