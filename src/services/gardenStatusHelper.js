@@ -149,7 +149,7 @@ function deleteGardenStatusData() {
   return db.run(`DELETE FROM ${gardenStatusTableName};`, {});
 }
 
-function getGardenStatusData(page = 1) {
+function getGardenStatusData() {
   const data = db.query(`SELECT * FROM ${gardenStatusTableName}`, {});
 
   return data;
