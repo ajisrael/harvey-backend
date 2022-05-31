@@ -1,4 +1,3 @@
-import { equal } from 'assert';
 import chai from 'chai';
 import bedToPumpConfig from '../../../src/config/bedToPumpConfig.js';
 import { gardenStatusSaveSuccess } from '../../../src/constants/messages.js';
@@ -6,6 +5,7 @@ import gardenBedData from '../../../src/data/gardenBedData.js';
 import { resetDB } from '../../../src/seeder.js';
 import { getGardenBedDataById } from '../../../src/services/gardenBedHelper.js';
 import {
+  calculateAverageOfStatuses,
   calculateNewGardenStatusForBed,
   getGardenStatusData,
   getGardenStatusDataById,
@@ -18,14 +18,28 @@ const should = chai.should();
 
 describe('gardenStatusHelper', () => {
   beforeEach((done) => {
-    //stubLogs();
+    stubLogs();
     resetDB();
     done();
   });
 
   afterEach((done) => {
-    //restoreLogs();
+    restoreLogs();
     done();
+  });
+
+  describe('calculateAverageOfStatuses', () => {
+    it('should calculate the average of all gardenStatusData passed', () => {
+      const gardenStatusData = getGardenStatusData();
+      const result = calculateAverageOfStatuses(gardenStatusData);
+
+      result.should.be.a('object');
+      result.airTemp.should.be.a('number');
+      result.soilTemp.should.be.a('number');
+      result.light.should.be.a('number');
+      result.moisture.should.be.a('number');
+      result.humidity.should.be.a('number');
+    });
   });
 
   describe('calculateNewGardenStatusForBed', () => {
