@@ -3,6 +3,7 @@ import express from 'express';
 import actionsRoutes from './routes/actionsRoutes.js';
 import nodeRoutes from './routes/nodeRoutes.js';
 import gardenBedRoutes from './routes/gardenBedRoutes.js';
+import gardenStatusRoutes from './routes/gardenStatusRoutes.js';
 import pumpRoutes from './routes/pumpRoutes.js';
 import solenoidRoutes from './routes/solenoidRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 app.use('/api/v1/actions', actionsRoutes);
 app.use('/api/v1/node', nodeRoutes);
 app.use('/api/v1/gardenBed', gardenBedRoutes);
+app.use('/api/v1/gardenStatus', gardenStatusRoutes);
 app.use('/api/v1/pumpState', pumpRoutes);
 app.use('/api/v1/solenoidState', solenoidRoutes);
 app.use('/api/v1/users', userRoutes);
