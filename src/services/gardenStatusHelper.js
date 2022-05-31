@@ -12,20 +12,12 @@ function calculateAverageOfGardenBedData(gardenBedData) {
 
   gardenBedData.forEach((entry) => {
     removeUnnecessaryFieldsForCalculation(entry);
-
-    Object.keys(entry).forEach((field) => {
-      if (totals[field]) {
-        totals[field] += entry[field];
-      } else {
-        totals[field] = entry[field];
-      }
-    });
+    populateTotals(totals, entry);
   });
 
   const bedAverage = {};
-  Object.keys(totals).forEach((field) => {
-    bedAverage[field] = totals[field] / gardenBedData.length;
-  });
+
+  populateAverage(bedAverage, totals, gardenBedData.length);
 
   return bedAverage;
 }
@@ -164,10 +156,27 @@ function getGardenStatusDataById(bedId) {
   return data[0];
 }
 
+function populateAverage(average, totals, length) {
+  Object.keys(totals).forEach((field) => {
+    average[field] = totals[field] / length;
+  });
+}
+
+function populateTotals(totals, entry) {
+  Object.keys(entry).forEach((field) => {
+    if (totals[field]) {
+      totals[field] += entry[field];
+    } else {
+      totals[field] = entry[field];
+    }
+  });
+}
+
 function removeUnnecessaryFieldsForCalculation(data) {
-  delete data.id;
-  delete data.bedId;
-  delete data.created_at;
+  if (data.id) delete data.id;
+  if (data.bedId) delete data.bedId;
+  if (data.created_at) delete data.created_at;
+  if (data.entryCount) delete data.entryCount;
 }
 
 function saveGardenStatusData(gardenStatusData) {
@@ -198,6 +207,7 @@ function updateGardenStatusData(bedId, data) {
 }
 
 export {
+  calculateAverageOfStatuses,
   calculateBedAverages,
   calculateNewGardenStatusForBed,
   createGardenStatusTable,
