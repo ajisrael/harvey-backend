@@ -5,7 +5,6 @@ import { resetDB } from '../../../src/seeder.js';
 import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
 import generateToken from '../../../src/utilities/generateToken.js';
 import gardenBedData from '../../../src/data/gardenBedData.js';
-import serverConfig from '../../../src/config/serverConfig.js';
 
 const should = chai.should();
 chai.use(chaiHttp);
