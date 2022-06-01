@@ -18,7 +18,9 @@ import {
   updateUserIsAdmin,
   updateUserName,
   updateUserPassword,
+  isUserAdmin,
 } from '../../../src/services/userHelper.js';
+import users from '../../../src/data/userData.js';
 
 const should = chai.should();
 
@@ -107,6 +109,25 @@ describe('userHelper', () => {
       const result = getUserDataById('Not an email');
 
       should.not.exist(result);
+    });
+  });
+
+  describe('isUserAdmin', () => {
+    it('should return true when a user is an admin', () => {
+      const adminUsers = users.filter((entry) => {
+        return entry.isAdmin !== 0;
+      });
+      const result = isUserAdmin(getUserDataByEmail(adminUsers[0].email));
+      result.should.be.a('boolean');
+      result.should.be.true;
+    });
+    it('should return false when a user is NOT an admin', () => {
+      const nonAdminUsers = users.filter((entry) => {
+        return entry.isAdmin === 0;
+      });
+      const result = isUserAdmin(getUserDataByEmail(nonAdminUsers[0].email));
+      result.should.be.a('boolean');
+      result.should.be.false;
     });
   });
 

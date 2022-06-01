@@ -4,23 +4,17 @@ import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
 import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
 import users from '../../../src/data/userData.js';
+import {
+  checkNewlyRegisteredUserData,
+  checkUsersData,
+} from '../../utilities/dataChecker.js';
 
 const should = chai.should();
 chai.use(chaiHttp);
 
 const url = '/api/v1/users';
 
-const checkUsersData = (data, name, email) => {
-  data._id.should.be.a('number');
-  data.name.should.be.a('string');
-  data.email.should.be.a('string');
-  data.isAdmin.should.be.a('boolean');
-  data.token.should.be.a('string');
-  data.name.should.eql(name);
-  data.email.should.eql(email);
-};
-
-describe('Solenoid State Controller and Routes', () => {
+describe('userController & userRoutes', () => {
   before((done) => {
     stubLogs();
     resetDB();
@@ -32,10 +26,17 @@ describe('Solenoid State Controller and Routes', () => {
     done();
   });
 
+  let standardUser = {};
+  let adminUser = {};
+
   describe(`POST ${url}/login`, () => {
-    it('should login a user', (done) => {
-      const email = users[0].email;
-      const password = users[0].password;
+    it('should login a standard user', (done) => {
+      const standardUsers = users.filter((entry) => {
+        return entry.isAdmin === 0;
+      });
+      standardUser = standardUsers[0];
+      const email = standardUser.email;
+      const password = standardUser.password;
 
       chai
         .request(server)
@@ -44,9 +45,59 @@ describe('Solenoid State Controller and Routes', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          checkUsersData(res.body, users[0].name, users[0].email);
+          res.body.isAdmin.should.be.false;
+          checkUsersData(res.body, standardUser.name, standardUser.email);
+          standardUser.token = res.body.token;
           done();
         });
     });
+
+    it('should login an admin user', (done) => {
+      const adminUsers = users.filter((entry) => {
+        return entry.isAdmin !== 0;
+      });
+      adminUser = adminUsers[0];
+      const email = adminUser.email;
+      const password = adminUser.password;
+
+      chai
+        .request(server)
+        .post(`${url}/login`)
+        .send({ email, password })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.isAdmin.should.be.true;
+          checkUsersData(res.body, adminUser.name, adminUser.email);
+          adminUser.token = res.body.token;
+          done();
+        });
+    });
+  });
+
+  describe(`POST ${url}`, () => {
+    it('should register a new user when logged in as admin', (done) => {
+      const newUser = {
+        name: 'Alex Israels',
+        email: 'alex@example.com',
+        password: '1234567',
+      };
+
+      chai
+        .request(server)
+        .post(url)
+        .set('Authorization', 'Bearer ' + adminUser.token)
+        .send(newUser)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.be.a('object');
+          checkNewlyRegisteredUserData(res.body, newUser);
+          done();
+        });
+    });
+
+    it('should NOT register a new user when logged in as a standard user', () => {});
+
+    it('should NOT register a new user user already exists', () => {});
   });
 });
