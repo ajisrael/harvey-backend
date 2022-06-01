@@ -2,8 +2,11 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
-import generateToken from '../../../src/utilities/generateToken.js';
+import {
+  stubLogs,
+  restoreLogs,
+  getStandardUserToken,
+} from '../../utilities/testHelper.js';
 import pumpStateData from '../../../src/data/pumpStateData.js';
 
 const should = chai.should();
@@ -25,11 +28,9 @@ const checkPumpStateData = (data, componentId = null) => {
 };
 
 describe('Pump State Controller and Routes', () => {
-  let token = '';
   before((done) => {
     stubLogs();
     resetDB();
-    token = generateToken('1');
     done();
   });
 
@@ -43,7 +44,7 @@ describe('Pump State Controller and Routes', () => {
       chai
         .request(server)
         .get(url)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -58,7 +59,7 @@ describe('Pump State Controller and Routes', () => {
       chai
         .request(server)
         .get(url)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .send({ componentId: componentId })
         .end((err, res) => {
           res.should.have.status(200);

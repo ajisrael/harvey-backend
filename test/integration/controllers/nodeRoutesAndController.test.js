@@ -2,9 +2,11 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
-import generateToken from '../../../src/utilities/generateToken.js';
-import gardenBedData from '../../../src/data/gardenBedData.js';
+import {
+  stubLogs,
+  restoreLogs,
+  getStandardUserToken,
+} from '../../utilities/testHelper.js';
 import nodeConfig from '../../../src/config/nodeConfig.js';
 
 const should = chai.should();
@@ -22,11 +24,9 @@ const checkGardenNodeData = (data, nodeId = null) => {
 };
 
 describe('Node Controller and Routes', () => {
-  let token = '';
   before((done) => {
     stubLogs();
     resetDB();
-    token = generateToken('1');
     done();
   });
 
@@ -41,7 +41,7 @@ describe('Node Controller and Routes', () => {
         chai
           .request(server)
           .get(url.replace(':nodeId', nodeId))
-          .set('Authorization', 'Bearer ' + token)
+          .set('Authorization', `Bearer ${getStandardUserToken()}`)
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
