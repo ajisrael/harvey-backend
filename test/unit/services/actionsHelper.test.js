@@ -1,7 +1,7 @@
 import { equal } from 'assert';
 import chai from 'chai';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
+import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
 import actionData from '../../../src/data/actionData.js';
 import { actionsSaveSuccess } from '../../../src/constants/messages.js';
 import {

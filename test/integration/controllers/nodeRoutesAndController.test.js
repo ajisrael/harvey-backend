@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
+import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
 import generateToken from '../../../src/utilities/generateToken.js';
 import gardenBedData from '../../../src/data/gardenBedData.js';
 import nodeConfig from '../../../src/config/nodeConfig.js';

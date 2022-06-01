@@ -1,6 +1,6 @@
 import { equal } from 'assert';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
+import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
 import gardenBedData from '../../../src/data/gardenBedData.js';
 import {
   getGardenBedData,

@@ -1,6 +1,6 @@
 import chai from 'chai';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
+import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
 import solenoidStateData from '../../../src/data/solenoidStateData.js';
 import { Bed_0 } from '../../../src/constants/componentIds.js';
 import {

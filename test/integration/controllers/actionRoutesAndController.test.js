@@ -2,8 +2,12 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
 import generateToken from '../../../src/utilities/generateToken.js';
+import {
+  stubLogs,
+  restoreLogs,
+  getStandardUserToken,
+} from '../../utilities/testHelper.js';
 import actionData from '../../../src/data/actionData.js';
 
 const should = chai.should();

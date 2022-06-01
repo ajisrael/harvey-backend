@@ -1,6 +1,6 @@
 import chai from 'chai';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
+import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
 import { removeSqlFields } from '../../utilities/dataCleaner.js';
 import {
   userSaveError,

@@ -12,7 +12,7 @@ import {
   saveGardenStatusData,
   updateGardenStatusData,
 } from '../../../src/services/gardenStatusHelper.js';
-import { stubLogs, restoreLogs } from '../../utilities/testSetup.js';
+import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
 
 const should = chai.should();
 
