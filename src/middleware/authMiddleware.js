@@ -3,6 +3,7 @@ import { getUserDataById, isUserAdmin } from '../services/userHelper.js';
 
 const protect = (req, res, next) => {
   let token;
+  let user;
 
   if (
     req.headers.authorization &&
@@ -13,14 +14,19 @@ const protect = (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = getUserDataById(decoded.id);
-
-      next();
+      user = getUserDataById(decoded.id);
     } catch (error) {
       console.error(error);
       res.status(401);
       throw new Error('Not authorized, token failed');
     }
+
+    if (typeof user === 'undefined') {
+      throw new Error('Unable to find user, token failed');
+    }
+
+    req.user = user;
+    next();
   }
 
   if (!token) {

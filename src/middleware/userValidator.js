@@ -43,7 +43,7 @@ function validateRegistrationData(req, res, next) {
 
   if (messages.length) {
     let error = new Error(messages.join(', '));
-    error.statusCode = 400;
+    res.status(400);
     throw error;
   } else {
     next();
