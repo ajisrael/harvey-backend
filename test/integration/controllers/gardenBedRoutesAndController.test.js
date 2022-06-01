@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
-import generateToken from '../../../src/utilities/generateToken.js';
 import {
   stubLogs,
   restoreLogs,
@@ -32,12 +31,10 @@ const checkGardenBedData = (data, bedId = null) => {
   });
 };
 
-describe('GardenBed Controller and Routes', () => {
-  let token = '';
+describe('gardenBedController & gardenBedRoutes', () => {
   before((done) => {
     stubLogs();
     resetDB();
-    token = generateToken('1');
     done();
   });
 
@@ -55,7 +52,7 @@ describe('GardenBed Controller and Routes', () => {
       chai
         .request(server)
         .get(url)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -80,7 +77,7 @@ describe('GardenBed Controller and Routes', () => {
       chai
         .request(server)
         .get(url)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .send({ bedId: gardenBedData[0].bedId })
         .end((err, res) => {
           res.should.have.status(200);
@@ -110,7 +107,7 @@ describe('GardenBed Controller and Routes', () => {
       chai
         .request(server)
         .post(url)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .send(gardenBedData)
         .end((err, res) => {
           res.should.have.status(200);

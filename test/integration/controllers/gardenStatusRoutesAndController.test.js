@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
-import generateToken from '../../../src/utilities/generateToken.js';
 import {
   stubLogs,
   restoreLogs,
@@ -28,12 +27,10 @@ const checkGardenStatusData = (data, bedId = null) => {
   }
 };
 
-describe('GardenStatus Controller and Routes', () => {
-  let token = '';
+describe('gardenStatusController & gardenStatusRoutes', () => {
   before((done) => {
     stubLogs();
     resetDB();
-    token = generateToken('1');
     done();
   });
 
@@ -47,7 +44,7 @@ describe('GardenStatus Controller and Routes', () => {
       chai
         .request(server)
         .get(url)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -60,12 +57,12 @@ describe('GardenStatus Controller and Routes', () => {
       chai
         .request(server)
         .get(url)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .send({ bedId: gardenBedData[0].bedId })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          // checkGardenStatusData(res.body, bedId);
+          checkGardenStatusData(res.body, bedId);
           done();
         });
     });

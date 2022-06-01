@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
-import generateToken from '../../../src/utilities/generateToken.js';
 import {
   stubLogs,
   restoreLogs,
@@ -13,12 +12,10 @@ import actionData from '../../../src/data/actionData.js';
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('Actions Controller and Routes', () => {
-  let token = '';
+describe('actionsController & actionsRoutes', () => {
   before((done) => {
     stubLogs();
     resetDB();
-    token = generateToken('1');
     done();
   });
 
@@ -33,7 +30,7 @@ describe('Actions Controller and Routes', () => {
       chai
         .request(server)
         .get('/api/v1/actions/data')
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -50,7 +47,7 @@ describe('Actions Controller and Routes', () => {
       chai
         .request(server)
         .get('/api/v1/actions/data')
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .send({ actionId: action.id })
         .end((err, res) => {
           res.should.have.status(200);
@@ -78,7 +75,7 @@ describe('Actions Controller and Routes', () => {
       chai
         .request(server)
         .post('/api/v1/actions/data')
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .send(action)
         .end((err, res) => {
           res.should.have.status(200);
