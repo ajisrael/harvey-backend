@@ -2,7 +2,12 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../src/server.js';
 import { resetDB } from '../../../src/seeder.js';
-import { stubLogs, restoreLogs } from '../../utilities/testHelper.js';
+import {
+  stubLogs,
+  restoreLogs,
+  getAdminUserToken,
+  getStandardUserToken,
+} from '../../utilities/testHelper.js';
 import users from '../../../src/data/userData.js';
 import {
   checkNewlyRegisteredUserData,
@@ -13,6 +18,12 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 const url = '/api/v1/users';
+
+const newUser = {
+  name: 'New User',
+  email: 'new@example.com',
+  password: '1234567',
+};
 
 describe('userController & userRoutes', () => {
   before((done) => {
@@ -56,20 +67,16 @@ describe('userController & userRoutes', () => {
       const adminUsers = users.filter((entry) => {
         return entry.isAdmin !== 0;
       });
-      adminUser = adminUsers[0];
-      const email = adminUser.email;
-      const password = adminUser.password;
 
       chai
         .request(server)
         .post(`${url}/login`)
-        .send({ email, password })
+        .send({ email: adminUsers[0].email, password: adminUsers[0].password })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.isAdmin.should.be.true;
-          checkUsersData(res.body, adminUser.name, adminUser.email);
-          adminUser.token = res.body.token;
+          checkUsersData(res.body, adminUsers[0].name, adminUsers[0].email);
           done();
         });
     });
@@ -77,16 +84,10 @@ describe('userController & userRoutes', () => {
 
   describe(`POST ${url}`, () => {
     it('should register a new user when logged in as admin', (done) => {
-      const newUser = {
-        name: 'Alex Israels',
-        email: 'alex@example.com',
-        password: '1234567',
-      };
-
       chai
         .request(server)
         .post(url)
-        .set('Authorization', 'Bearer ' + adminUser.token)
+        .set('Authorization', `Bearer ${getAdminUserToken()}`)
         .send(newUser)
         .end((err, res) => {
           res.should.have.status(201);
@@ -96,8 +97,38 @@ describe('userController & userRoutes', () => {
         });
     });
 
-    it('should NOT register a new user when logged in as a standard user', () => {});
+    it('should NOT register a new user when logged in as a standard user', (done) => {
+      chai
+        .request(server)
+        .post(url)
+        .set('Authorization', `Bearer ${getStandardUserToken()}`)
+        .send(newUser)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.message.should.be.a('string');
+          res.body.stack.should.be.a('string');
+          res.body.message.should.eql('Not authorized, not an admin');
+          done();
+        });
+    });
 
-    it('should NOT register a new user user already exists', () => {});
+    it('should NOT register a new user user already exists', (done) => {
+      const existingUser = Object.assign({}, users[0]);
+      delete existingUser.isAdmin;
+      chai
+        .request(server)
+        .post(url)
+        .set('Authorization', `Bearer ${getAdminUserToken()}`)
+        .send(existingUser)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.message.should.be.a('string');
+          res.body.stack.should.be.a('string');
+          res.body.message.should.eql('User already exists');
+          done();
+        });
+    });
   });
 });
