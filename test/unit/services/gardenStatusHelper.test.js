@@ -5,7 +5,7 @@ import gardenBedData from '../../../src/data/gardenBedData.js';
 import { resetDB } from '../../../src/seeder.js';
 import { getGardenBedDataById } from '../../../src/services/gardenBedHelper.js';
 import {
-  calculateAverageOfStatuses,
+  calculateAverageOfStatus,
   calculateNewGardenStatusForBed,
   getGardenStatusData,
   getGardenStatusDataById,
@@ -28,10 +28,10 @@ describe('gardenStatusHelper', () => {
     done();
   });
 
-  describe('calculateAverageOfStatuses', () => {
+  describe('calculateAverageOfStatus', () => {
     it('should calculate the average of all gardenStatusData passed', () => {
       const gardenStatusData = getGardenStatusData();
-      const result = calculateAverageOfStatuses(gardenStatusData);
+      const result = calculateAverageOfStatus(gardenStatusData);
 
       result.should.be.a('object');
       result.airTemp.should.be.a('number');

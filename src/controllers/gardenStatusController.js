@@ -1,5 +1,5 @@
 import {
-  calculateAverageOfStatuses,
+  calculateAverageOfStatus,
   getGardenStatusData,
   getGardenStatusDataById,
 } from '../services/gardenStatusHelper.js';
@@ -16,7 +16,7 @@ const getData = (req, res) => {
   } else {
     console.log(`Returning garden status data for garden`);
     const gardenStatusData = getGardenStatusData();
-    const payload = calculateAverageOfStatuses(gardenStatusData);
+    const payload = calculateAverageOfStatus(gardenStatusData);
     res.json(payload);
   }
 };

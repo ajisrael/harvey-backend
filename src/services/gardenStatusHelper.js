@@ -7,7 +7,7 @@ import {
 import bedToPumpConfig from '../config/bedToPumpConfig.js';
 import { getRecentGardenBedDataById } from './gardenBedHelper.js';
 
-function calculateAverageOfStatuses(gardenStatusData) {
+function calculateAverageOfStatus(gardenStatusData) {
   const totals = {};
   const gardenAverage = {};
 
@@ -221,7 +221,7 @@ function updateGardenStatusData(bedId, data) {
 }
 
 export {
-  calculateAverageOfStatuses,
+  calculateAverageOfStatus,
   calculateBedAverages,
   calculateNewGardenStatusForBed,
   createGardenStatusTable,
