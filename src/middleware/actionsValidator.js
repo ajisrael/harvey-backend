@@ -5,7 +5,27 @@ function areBedIdsStrings(bedIds) {
   return nonStrings.length === 0;
 }
 
-function validateActionData(req, res, next) {
+function validateActionGet(req, res, next) {
+  let messages = [];
+
+  if (Object.keys(req.body).length !== 0) {
+    if (!req.body.actionId) {
+      messages.push('actionId is empty');
+    } else if (typeof req.body.actionId !== 'number') {
+      messages.push('actionId must be a number');
+    }
+  }
+
+  if (messages.length) {
+    let error = new Error(messages.join(', '));
+    res.status(400);
+    throw error;
+  } else {
+    next();
+  }
+}
+
+function validateActionPost(req, res, next) {
   let messages = [];
 
   if (Object.keys(req.body).length === 0) {
@@ -53,4 +73,4 @@ function validateActionData(req, res, next) {
   }
 }
 
-export { validateActionData };
+export { validateActionGet, validateActionPost };
