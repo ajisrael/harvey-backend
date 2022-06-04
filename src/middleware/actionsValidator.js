@@ -30,38 +30,40 @@ function validateActionPost(req, res, next) {
 
   if (Object.keys(req.body).length === 0) {
     messages.push('body required for request');
-  }
+  } else {
+    if (!req.body.bedIds) {
+      messages.push('bedIds is empty');
+    } else if (!Array.isArray(req.body.bedIds)) {
+      messages.push('bedIds must be an array');
+    } else if (req.body.bedIds.length === 0) {
+      messages.push('bedIds must contain at least one bedId');
+    } else if (!areBedIdsStrings(req.body.bedIds)) {
+      messages.push('bedId in bedIds array must be a string');
+    }
 
-  if (!req.body.bedIds) {
-    messages.push('bedIds is empty');
-  } else if (!Array.isArray(req.body.bedIds)) {
-    messages.push('bedIds must be an array');
-  } else if (!areBedIdsStrings(req.body.bedIds)) {
-    messages.push('bedId in bedIds array must be a string');
-  }
+    if (!req.body.actionCompleted) {
+      messages.push('actionCompleted is empty');
+    } else if (typeof req.body.actionCompleted !== 'number') {
+      messages.push('actionCompleted must be a number');
+    }
 
-  if (!req.body.actionCompleted) {
-    messages.push('actionCompleted is empty');
-  } else if (typeof req.body.actionCompleted !== 'number') {
-    messages.push('actionCompleted must be a number');
-  }
+    if (!req.body.actionCompletedType) {
+      messages.push('actionCompletedType is empty');
+    } else if (typeof req.body.actionCompletedType !== 'string') {
+      messages.push('actionCompletedType must be a string');
+    }
 
-  if (!req.body.actionCompletedType) {
-    messages.push('actionCompletedType is empty');
-  } else if (typeof req.body.actionCompletedType !== 'string') {
-    messages.push('actionCompletedType must be a string');
-  }
+    if (!req.body.actionName) {
+      messages.push('actionName is empty');
+    } else if (typeof req.body.actionName !== 'string') {
+      messages.push('actionName must be a string');
+    }
 
-  if (!req.body.actionName) {
-    messages.push('actionName is empty');
-  } else if (typeof req.body.actionName !== 'string') {
-    messages.push('actionName must be a string');
-  }
-
-  if (!req.body.actionType) {
-    messages.push('actionType is empty');
-  } else if (typeof req.body.actionType !== 'string') {
-    messages.push('actionType must be a string');
+    if (!req.body.actionType) {
+      messages.push('actionType is empty');
+    } else if (typeof req.body.actionType !== 'string') {
+      messages.push('actionType must be a string');
+    }
   }
 
   if (messages.length) {
