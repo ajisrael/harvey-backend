@@ -2,6 +2,7 @@ const serverConfig = {
   gardenBedAverageWindow: 10,
   jwtExpiration: '1d',
   listPerPage: 10,
+  passwordMinLength: 5,
   pumpDelay: 10 * 1000,
   pumpOn: 1,
   pumpOff: 0,

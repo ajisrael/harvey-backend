@@ -208,6 +208,8 @@ describe('userValidator', () => {
         });
     });
 
+    it(`should NOT register a new user when password is less than ${serverConfig.passwordMinLength} characters`, () => {});
+
     it(`should NOT register a new user when password does not contain a number`, () => {});
 
     it(`should NOT register a new user when password does not contain a symbol`, () => {});
