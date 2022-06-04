@@ -20,4 +20,15 @@ const checkUsersData = (data, name, email) => {
   data.email.should.eql(email);
 };
 
-export { checkNewlyRegisteredUserData, checkUsersData };
+const checkValidationResponse = (body, expectedMessage) => {
+  body.should.be.a('object');
+  body.message.should.be.a('string');
+  body.stack.should.be.a('string');
+  body.message.should.eql(expectedMessage);
+};
+
+export {
+  checkNewlyRegisteredUserData,
+  checkUsersData,
+  checkValidationResponse,
+};

@@ -8,18 +8,12 @@ import {
   getStandardUserToken,
 } from '../../utilities/testHelper.js';
 import actionData from '../../../src/data/actionData.js';
+import { checkValidationResponse } from '../../utilities/dataChecker.js';
 
 const should = chai.should();
 chai.use(chaiHttp);
 
 const url = '/api/v1/actions/data';
-
-const checkValidationResponse = (body, expectedMessage) => {
-  body.should.be.a('object');
-  body.message.should.be.a('string');
-  body.stack.should.be.a('string');
-  body.message.should.eql(expectedMessage);
-};
 
 describe('actionsValidator', () => {
   before((done) => {
