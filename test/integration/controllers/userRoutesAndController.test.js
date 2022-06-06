@@ -22,7 +22,7 @@ const url = '/api/v1/users';
 const newUser = {
   name: 'New User',
   email: 'new@example.com',
-  password: '1234567',
+  password: '1234567!',
 };
 
 describe('userController & userRoutes', () => {
