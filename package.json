@@ -12,6 +12,7 @@
     "test:action": "mocha \"test/**/**/*action*.test.js\" --exit --timeout 10000",
     "test:gardenBed": "mocha \"test/**/**/*gardenBed*.test.js\" --exit --timeout 10000",
     "test:gardenStatus": "mocha \"test/**/**/*gardenStatus*.test.js\" --exit --timeout 10000",
+    "test:middleware": "mocha \"test/**/middleware/*.test.js\" --exit --timeout 10000",
     "test:node": "mocha \"test/**/**/*node*.test.js\" --exit --timeout 10000",
     "test:pump": "mocha \"test/**/**/*pump*.test.js\" --exit --timeout 10000",
     "test:solenoid": "mocha \"test/**/**/*solenoid*.test.js\" --exit --timeout 10000",
