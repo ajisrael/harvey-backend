@@ -13,17 +13,12 @@ import {
   checkNewlyRegisteredUserData,
   checkUsersData,
 } from '../../utilities/dataChecker.js';
+import { testUser } from '../../data/userTestData.js';
 
 const should = chai.should();
 chai.use(chaiHttp);
 
 const url = '/api/v1/users';
-
-const newUser = {
-  name: 'New User',
-  email: 'new@example.com',
-  password: '1234567!',
-};
 
 describe('userController & userRoutes', () => {
   before((done) => {
@@ -88,11 +83,11 @@ describe('userController & userRoutes', () => {
         .request(server)
         .post(url)
         .set('Authorization', `Bearer ${getAdminUserToken()}`)
-        .send(newUser)
+        .send(testUser)
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
-          checkNewlyRegisteredUserData(res.body, newUser);
+          checkNewlyRegisteredUserData(res.body, testUser);
           done();
         });
     });
@@ -102,7 +97,7 @@ describe('userController & userRoutes', () => {
         .request(server)
         .post(url)
         .set('Authorization', `Bearer ${getStandardUserToken()}`)
-        .send(newUser)
+        .send(testUser)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');

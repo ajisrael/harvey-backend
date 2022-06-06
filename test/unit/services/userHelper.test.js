@@ -6,7 +6,7 @@ import {
   userSaveError,
   userSaveSuccess,
 } from '../../../src/constants/messages.js';
-import userData from '../../../src/data/userData.js';
+import users from '../../../src/data/userData.js';
 import {
   getUserData,
   getUserDataById,
@@ -20,7 +20,7 @@ import {
   updateUserPassword,
   isUserAdmin,
 } from '../../../src/services/userHelper.js';
-import users from '../../../src/data/userData.js';
+import { testUser } from '../../data/userTestData.js';
 
 const should = chai.should();
 
@@ -39,7 +39,7 @@ describe('userHelper', () => {
   describe('getUserData', () => {
     it('should get all user data', () => {
       const expectedData = [];
-      userData.forEach((entry) => {
+      users.forEach((entry) => {
         expectedData.push({
           name: entry.name,
           email: entry.email,
@@ -62,7 +62,7 @@ describe('userHelper', () => {
 
       const expectedData = {};
 
-      userData.forEach((entry) => {
+      users.forEach((entry) => {
         if (entry.email === testData.email) {
           expectedData.name = entry.name;
           expectedData.email = entry.email;
@@ -90,7 +90,7 @@ describe('userHelper', () => {
 
       const expectedData = {};
 
-      userData.forEach((entry) => {
+      users.forEach((entry) => {
         if (entry.email === testData.email) {
           expectedData.name = entry.name;
           expectedData.email = entry.email;
@@ -121,6 +121,7 @@ describe('userHelper', () => {
       result.should.be.a('boolean');
       result.should.be.true;
     });
+
     it('should return false when a user is NOT an admin', () => {
       const nonAdminUsers = users.filter((entry) => {
         return entry.isAdmin === 0;
@@ -133,14 +134,14 @@ describe('userHelper', () => {
 
   describe('matchPassword', () => {
     it("should match password of a user's email", () => {
-      const result = matchPassword(userData[0].email, userData[0].password);
+      const result = matchPassword(users[0].email, users[0].password);
 
       result.should.be.a('boolean');
       result.should.be.true;
     });
 
     it("should NOT match password of a user's email when the password does not match", () => {
-      const result = matchPassword(userData[0].email, 'incorrect password');
+      const result = matchPassword(users[0].email, 'incorrect password');
 
       result.should.be.a('boolean');
       result.should.be.false;
@@ -149,12 +150,7 @@ describe('userHelper', () => {
 
   describe('saveUserData', () => {
     it('should get success message after saving user data', () => {
-      const newUserData = {
-        name: 'Unit Test User',
-        email: 'unittestuser@example.com',
-        password: '1234567',
-        isAdmin: 0,
-      };
+      const newUserData = Object.assign({ isAdmin: 0 }, testUser);
 
       const expectedMessage = userSaveSuccess;
 
@@ -165,23 +161,21 @@ describe('userHelper', () => {
     });
 
     it('should NOT get success message after saving user data with existing email', () => {
-      const newUserData = {
-        name: 'Unit Test User',
-        email: userData[0].email,
-        password: '1234567',
-        isAdmin: 0,
-      };
+      const newUserData = Object.assign({ isAdmin: 0 }, testUser);
+      newUserData.email = users[0].email;
+
+      const expectedMessage = userSaveError;
+
+      const result = saveUserData(newUserData);
+
+      result.message.should.be.a('string');
+      result.message.should.eql(expectedMessage);
     });
   });
 
   describe('saveUserDataAndReturnUser', () => {
     it('should return new saved user data without password', () => {
-      const newUserData = {
-        name: 'Unit Test User',
-        email: 'unittestuser@example.com',
-        password: '1234567',
-        isAdmin: 0,
-      };
+      const newUserData = Object.assign({ isAdmin: 0 }, testUser);
 
       const expectedData = {};
       expectedData.name = newUserData.name;
@@ -200,12 +194,8 @@ describe('userHelper', () => {
     });
 
     it('should NOT return new saved user data without password when passed existing email', () => {
-      const newUserData = {
-        name: 'Unit Test User',
-        email: userData[0].email,
-        password: '1234567',
-        isAdmin: 0,
-      };
+      const newUserData = Object.assign({ isAdmin: 0 }, testUser);
+      newUserData.email = users[0].email;
 
       const expectedData = { message: userSaveError };
 
@@ -268,7 +258,7 @@ describe('userHelper', () => {
     it('should return true after updating user password', () => {
       const testData = getUserData().data[0];
 
-      const oldPassword = userData.filter((entry) => {
+      const oldPassword = users.filter((entry) => {
         return entry.email === testData.email;
       })[0].password;
 
