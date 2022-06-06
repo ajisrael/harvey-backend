@@ -9,6 +9,7 @@ import {
 } from '../../utilities/testHelper.js';
 import serverConfig from '../../../src/config/serverConfig.js';
 import { checkValidationResponse } from '../../utilities/dataChecker.js';
+import users from '../../../src/data/userData.js';
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -16,9 +17,9 @@ chai.use(chaiHttp);
 const url = '/api/v1/users';
 
 const newUser = {
-  name: 'Alex Israels',
-  email: 'alex@example.com',
-  password: '1234567',
+  name: 'Test User',
+  email: 'test_user@example.com',
+  password: users[0].password,
 };
 
 describe('userValidator', () => {
@@ -47,7 +48,7 @@ describe('userValidator', () => {
     });
 
     it('should NOT login a user when email is empty', (done) => {
-      const loginUser = { password: '1234567' };
+      const loginUser = { password: newUser.password };
       chai
         .request(server)
         .post(`${url}/login`)
@@ -60,7 +61,7 @@ describe('userValidator', () => {
     });
 
     it('should NOT login a user when email is not a string', (done) => {
-      const loginUser = { email: 1, password: '1234567' };
+      const loginUser = { email: 1, password: newUser.password };
       chai
         .request(server)
         .post(`${url}/login`)
@@ -73,7 +74,7 @@ describe('userValidator', () => {
     });
 
     it('should NOT login a user when password is empty', (done) => {
-      const loginUser = { email: 'test@test.com' };
+      const loginUser = { email: newUser.email };
       chai
         .request(server)
         .post(`${url}/login`)
@@ -86,7 +87,7 @@ describe('userValidator', () => {
     });
 
     it('should NOT login a user when password is not a string', (done) => {
-      const loginUser = { email: 'test@test.com', password: 1 };
+      const loginUser = { email: newUser.email, password: 1 };
       chai
         .request(server)
         .post(`${url}/login`)
@@ -175,7 +176,21 @@ describe('userValidator', () => {
         });
     });
 
-    it('should NOT register a new user when email is not correctly formatted', () => {});
+    it('should NOT register a new user when email is not correctly formatted', (done) => {
+      const registerUser = Object.assign({}, newUser);
+      delete registerUser.email;
+      registerUser.email = 'not a valid email';
+      chai
+        .request(server)
+        .post(url)
+        .set('Authorization', `Bearer ${getAdminUserToken()}`)
+        .send(registerUser)
+        .end((err, res) => {
+          res.should.have.status(400);
+          checkValidationResponse(res.body, 'email format is not valid');
+          done();
+        });
+    });
 
     it('should NOT register a new user when missing password', (done) => {
       const registerUser = Object.assign({}, newUser);
@@ -208,10 +223,42 @@ describe('userValidator', () => {
         });
     });
 
-    it(`should NOT register a new user when password is less than ${serverConfig.passwordMinLength} characters`, () => {});
-
-    it(`should NOT register a new user when password does not contain a number`, () => {});
-
-    it(`should NOT register a new user when password does not contain a symbol`, () => {});
+    it(`should NOT register a new user when password is less than ${serverConfig.passwordMinLength} characters`, (done) => {
+      const registerUser = Object.assign({}, newUser);
+      delete registerUser.password;
+      registerUser.password = '1';
+      chai
+        .request(server)
+        .post(url)
+        .set('Authorization', `Bearer ${getAdminUserToken()}`)
+        .send(registerUser)
+        .end((err, res) => {
+          res.should.have.status(400);
+          checkValidationResponse(
+            res.body,
+            `password must be at least ${serverConfig.passwordMinLength} characters long`
+          );
+          done();
+        });
+    });
+    it(`should NOT register a new user when password is more than ${serverConfig.passwordMaxLength} characters`, (done) => {
+      const registerUser = Object.assign({}, newUser);
+      delete registerUser.password;
+      registerUser.password =
+        '012345678901234567890123456789012345678901234567890123456789';
+      chai
+        .request(server)
+        .post(url)
+        .set('Authorization', `Bearer ${getAdminUserToken()}`)
+        .send(registerUser)
+        .end((err, res) => {
+          res.should.have.status(400);
+          checkValidationResponse(
+            res.body,
+            `password cannot be more than ${serverConfig.passwordMaxLength} characters long`
+          );
+          done();
+        });
+    });
   });
 });
