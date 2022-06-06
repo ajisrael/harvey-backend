@@ -1,14 +1,5 @@
 import serverConfig from '../config/serverConfig.js';
-
-function throwErrorWithMessagesOrCallNext(messages, res, next) {
-  if (messages.length) {
-    let error = new Error(messages.join(', '));
-    res.status(400);
-    throw error;
-  } else {
-    next();
-  }
-}
+import { throwErrorWithMessagesOrCallNext } from './errorMiddleware.js';
 
 function validateEmail(email, messages) {
   const emailIsValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
