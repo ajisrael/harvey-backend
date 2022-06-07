@@ -22,6 +22,7 @@ const protect = (req, res, next) => {
     }
 
     if (typeof user === 'undefined') {
+      res.status(401);
       throw new Error('Unable to find user, token failed');
     }
 
