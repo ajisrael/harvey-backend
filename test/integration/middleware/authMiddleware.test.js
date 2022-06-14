@@ -72,15 +72,12 @@ describe('authMiddleware', () => {
     it(`should STOP a request when user is not an admin`, (done) => {
       chai
         .request(server)
-        .get(url)
+        .post('/api/v1/users')
         .set('Authorization', `Bearer ${getStandardUserToken()}`)
         .send()
         .end((err, res) => {
           res.should.have.status(401);
-          checkValidationResponse(
-            res.body,
-            'Unable to find user, token failed'
-          );
+          checkValidationResponse(res.body, 'Not authorized, not an admin');
           done();
         });
     });
